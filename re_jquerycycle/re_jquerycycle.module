@@ -1,0 +1,28 @@
+<?php
+/**
+ * @file
+ * Provides the jQuery Cycle javascript library and styles to the RE Slideshow
+ * Base module.
+ */
+
+
+/**
+ * Implementation of hook_define_re_slideshowbase_library()
+ */
+function re_jquerycycle_define_re_slideshowbase_library() {
+  $path_to_module = drupal_get_path('module', 're_jquerycycle');
+  $jquery_cycle = array(
+    're_jquerycycle' => array(
+      'name' => 'jQuery Cycle (provided by: re_jquerycycle)',
+      'js' => array(
+        $path_to_module .'/js/jquery.easing.1.3.js',
+        $path_to_module .'/js/jquery.cycle/jquery.cycle.all.min.js',
+        $path_to_module .'/js/re_jquerycycle.js',
+      ),
+      'css' => array(
+        $path_to_module .'/css/re_jquerycycle.css',
+      ),
+    ),
+  );
+  return $jquery_cycle;
+} // re_jquerycycle_define_re_slideshowbase_library()
