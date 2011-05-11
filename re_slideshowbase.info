@@ -5,4 +5,4 @@ description = 'Provides a base module for adding javascript slideshow modules to
 package = 'Raised Eyebrow Custom Modules'
 core = 6.x
 php = 5.2
-version = 6.x-1.0-alpha1
+version = 6.x-1.0-alpha2
