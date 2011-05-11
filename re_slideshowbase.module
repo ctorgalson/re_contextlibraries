@@ -3,6 +3,8 @@
  * @file
  * This file provides theming functions and other logic for the re_slideshowbase
  * module.
+ *
+ * @todo Implement hook_perm()
  */
 
 
@@ -27,6 +29,13 @@ function re_slideshowbase_admin() {
     '#weight' => 5,
     '#default_value' => variable_get('re_slideshowbase_library', 'none'),
     '#required' => TRUE,
+  );
+  $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Debug Mode'),
+    '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
+    '#weight' =>10,
+    '#default_value' => variable_get('re_slideshowbase_debug', 0),
   );
   re_slideshowbase_register_libraries();
   return system_settings_form($form);
@@ -91,6 +100,14 @@ function re_slideshowbase_menu() {
 
 
 /**
+ * Implementation of hook_perm().
+ */
+function re_slideshowbase_perm() {
+  return array('administer re_slideshowbase');
+} // re_slideshowbase_perm()
+
+
+/**
  * Implementation of template_preprocess_views_view().
  *
  * This function handles any preprocessing required for individual views. In
@@ -109,17 +126,17 @@ function re_slideshowbase_preprocess_views_view(&$variables) {
     // permissions:
     if ($current_display != 'page_1' && user_access('assign node weight') && user_access('edit any re_slide content')) {
       // Display a message advertising the sorting view:
-      $sorting_message = t('You can change the order of these slides in the slideshow on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
-      // Display a message indicating which library is in use--if the user is
-      // sufficiently trustworthy :)
-      if (user_access('administer re_slideshowbase')) {
-        $library_name = variable_get('re_slideshowbase_library', 'none');
-        if ($library_name != 'none') {
-          $debug_message = t('The current library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
-          drupal_set_message($debug_message, 'status', TRUE);
-        }
-      }
+      $sorting_message = t('You can change the order of these slides on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
       drupal_set_message($sorting_message, 'status', FALSE);
+    }
+    // Display a message indicating which library is in use--if the user is
+    // sufficiently trustworthy :)
+    if (user_access('administer re_slideshowbase')) {
+      $library_name = variable_get('re_slideshowbase_library', 'none');
+      if (variable_get('re_slideshowbase_debug', 0) && $library_name != 'none') {
+        $debug_message = t('The current library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
+        drupal_set_message($debug_message, 'status', TRUE);
+      }
     }
   }
 } // re_slideshowbase_preprocess_views_view()
