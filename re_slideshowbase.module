@@ -13,8 +13,8 @@ function re_slideshowbase_admin() {
   $form = array();
   $form['re_slideshowbase_libraries'] = array(
     '#type' => 'fieldset',
-    '#title' => t('RE Slideshow Extras library settings'),
-    '#description' => t('Settings related to external javascript libraries used by RE Slideshow Extras'),
+    '#title' => t('RE Slideshow Base library settings'),
+    '#description' => t('Settings related to external javascript libraries used by the RE Slideshow Base module'),
     '#weight' => 5,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
@@ -38,16 +38,21 @@ function re_slideshowbase_admin() {
  *
  * @todo We need to handle the case where the $library_data variable comes up
  *       empty.
+ * @todo We need to show different messages for users with different permissions
+ * @todo We need to load the default css and js--or not--according to settings on
+ *       the admin page
+ * @todo We need to decide if there's any circumstances at all where we might even
+ *       need the default js file (currently the css file is useful, but the js
+ *       file is empty
  */
 function re_slideshowbase_load_resources() {
   // We need to know where the module is and where the libraries folder is:
   $path_to_module = drupal_get_path('module', 're_slideshowbase');
   // Decide what to do based on which module is in use:
   $library_name = variable_get('re_slideshowbase_library', 'none');
-  //kpr($library_name);
   switch ($library_name) {
     case 'none':
-      drupal_set_message(t('No slideshow library has been set for the RE Slideshow Extras Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Extras Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
+      drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
       break;
     default:
       if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
