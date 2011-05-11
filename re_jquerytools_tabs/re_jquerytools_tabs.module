@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ * Provides the jQuery Tools "Tabs" javascript library and styles to the RE Slideshow
+ * Base module.
+ */
+
+
+/**
+ * Implementation of hook_define_re_slideshowbase_library()
+ */
+function re_jquerytools_tabs_define_re_slideshowbase_library() {
+  $path_to_module = drupal_get_path('module', 're_jquerytools_tabs');
+  $library = array(
+    're_jquerytools_tabs' => array(
+      'name' => 'jQuery Tools Tabs (provided by: re_jquerytools_tabs)',
+      'js' => array(
+        $path_to_module .'/js/jquery.tools.min.js',
+        $path_to_module .'/js/re_jquerytools_tabs.js',
+      ),
+      'css' => array(
+        $path_to_module .'/css/re_jquerytools_tabs.css',
+      ),
+    ),
+  );
+  return $library;
+} // re_jquerytools_tabs_define_re_slideshowbase_library()
