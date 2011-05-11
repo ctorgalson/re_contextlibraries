@@ -9,7 +9,7 @@ Drupal.behaviors.re_jquerycycle = function(context) {
   $('#block-views-re_slideshowbase-block_1 .view-display-id-block_1 > .view-content > ul')
     .after('<div id="re_slideshowbase-view-display-id-block_1-navigation"/>')  
     .cycle({
-  		fx: 'scrollHorz',
+  		fx: 'scrollVert',
   		pager: '#re_slideshowbase-view-display-id-block_1-navigation',
   		pause: true,
   		pauseOnPagerHover: true

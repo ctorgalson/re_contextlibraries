@@ -108,6 +108,15 @@ function re_slideshowbase_preprocess_views_view(&$variables) {
     if ($current_display != 'page_1' && user_access('assign node weight') && user_access('edit any re_slide content')) {
       // Display a message advertising the sorting view:
       $sorting_message = t('You can change the order of these slides in the slideshow on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
+      // Display a message indicating which library is in use--if the user is
+      // sufficiently trustworthy :)
+      if (user_access('administer re_slideshowbase')) {
+        $library_name = variable_get('re_slideshowbase_library', 'none');
+        if ($library_name != 'none') {
+          $debug_message = t('The current library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
+          drupal_set_message($debug_message, 'status', TRUE);
+        }
+      }
       drupal_set_message($sorting_message, 'status', FALSE);
     }
   }
