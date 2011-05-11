@@ -5,7 +5,7 @@
  *
  * @see http://malsup.com/jquery/cycle/options.html
  */
-Drupal.behaviors.re_slideshowbase_jqueryCycle = function(context) {
+Drupal.behaviors.re_jquerycycle = function(context) {
   $('#block-views-re_slideshowbase-block_1 .view-display-id-block_1 > .view-content > ul')
     .after('<div id="re_slideshowbase-view-display-id-block_1-navigation"/>')  
     .cycle({
@@ -14,4 +14,4 @@ Drupal.behaviors.re_slideshowbase_jqueryCycle = function(context) {
   		pause: true,
   		pauseOnPagerHover: true
   	});
-} /* Drupal.behaviors.re_slideshowbase_jqueryCycle */
+} /* Drupal.behaviors.re_jquerycycle */

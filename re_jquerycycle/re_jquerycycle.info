@@ -3,6 +3,7 @@
 name = 'RE jQuery Cycle'
 description = 'Provides the jQuery Cycle javascript library and styles to the RE Slideshow Base module.'
 package = 'Raised Eyebrow Custom Modules'
+dependencies[] = re_slideshowbase
 core = 6.x
 php = 5.2
 version = 6.x-1.0-alpha1

@@ -11,7 +11,7 @@
  */
 function re_jquerycycle_define_re_slideshowbase_library() {
   $path_to_module = drupal_get_path('module', 're_jquerycycle');
-  $jquery_cycle = array(
+  $library = array(
     're_jquerycycle' => array(
       'name' => 'jQuery Cycle (provided by: re_jquerycycle)',
       'js' => array(
@@ -24,5 +24,5 @@ function re_jquerycycle_define_re_slideshowbase_library() {
       ),
     ),
   );
-  return $jquery_cycle;
+  return $library;
 } // re_jquerycycle_define_re_slideshowbase_library()
