@@ -51,14 +51,16 @@ function re_slideshowbase_load_resources() {
   // Decide what to do based on which module is in use:
   $library_name = variable_get('re_slideshowbase_library', 'none');
   switch ($library_name) {
-    case 'none':
+    case 'none': // If there isn't one...
       drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
       break;
-    default:
+    default: // But if there is one...or more...
       if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
+        // Loop through the available js files and add them:
         foreach ($library_data['js'] as $file) {
           drupal_add_js($file);
         }
+        // Loop through the available css files and add them:
         foreach ($library_data['css'] as $file) {
           drupal_add_css($file);
         }
