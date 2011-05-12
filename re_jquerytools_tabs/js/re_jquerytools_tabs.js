@@ -4,6 +4,8 @@
  * the jquery cycle plugin in the re_slideshowbase module.
  *
  * @see http://malsup.com/jquery/cycle/options.html
+ * @todo Make menu-builder into plugin, move it to parent module js, add it to 
+ *       function in jquerytools_tabs.module
  */
 Drupal.behaviors.re_jquerytools_tabs = function(context) {
   // Build a menu:
