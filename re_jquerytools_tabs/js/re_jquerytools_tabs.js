@@ -8,13 +8,10 @@
  *       function in jquerytools_tabs.module
  */
 Drupal.behaviors.re_jquerytools_tabs = function(context) {
-  // Build a menu:
-  $viewItems = $('#block-views-re_slideshowbase-block_1 .view-display-id-block_1 > .view-content > ul > li');
-  $navList = $('<div id="re_slideshowbase-view-display-id-block_1-navigation"></div>');
-  $viewItems.hide().each(function(i, e) { // Start looping through items to build the nav, and make sure all items are hidden!
-    $navList.append($('<a href="#">'+ (i + 1) +'</a>'));
-  });
-  $viewItems.parents('.view-content').append($navList);
+  // Get the selector:
+  var $viewItems = $('#block-views-re_slideshowbase-block_1 .view-display-id-block_1 > .view-content > ul > li');
+  // Build a menu and append it at an appropriate location:
+  $viewItems.parents('.view-content').append($.re_slideshowbase_menu());
   // Now, instantiate the tabs/slideshow:
   $('#re_slideshowbase-view-display-id-block_1-navigation')
     .tabs($viewItems, {

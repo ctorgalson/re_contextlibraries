@@ -8,13 +8,17 @@
 
 /**
  * Implementation of hook_define_re_slideshowbase_library()
+ *
+ * @todo Add future menu-generating script to js array
  */
 function re_jquerytools_tabs_define_re_slideshowbase_library() {
+  $path_to_parent_module = drupal_get_path('module', 're_slideshowbase');
   $path_to_module = drupal_get_path('module', 're_jquerytools_tabs');
   $library = array(
     're_jquerytools_tabs' => array(
       'name' => 'jQuery Tools Tabs (provided by: re_jquerytools_tabs)',
       'js' => array(
+        $path_to_parent_module .'/js/re_slideshowbase.js',
         $path_to_module .'/js/jquery.tools.min.js',
         $path_to_module .'/js/re_jquerytools_tabs.js',
       ),
