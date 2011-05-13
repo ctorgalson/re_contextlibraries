@@ -5,11 +5,6 @@
  * @file
  * This file provides theming functions and other logic for the re_slideshowbase
  * module.
- *
- * @todo Move preprocess_views_view() function to the feature that provides the
- *       view!
- * @todo Move the re_slideshowbase_debug setting to the feature as well (it needs
- *       the feature to work, but the module itself doesn't).
  */
 
 
@@ -41,15 +36,17 @@ function re_slideshowbase_admin() {
     '#title' => t('Include Libraries Only'),
     '#description' => t('Forces library modules to include only javascript library files and not their custom javascripts. If this module is <em>not</em> being used with the RE Slideshow feature, this box should be checked.'),
     '#weight' => 10,
-    '#default_value' => variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshow') ? 0 : 1)),
+    '#default_value' => variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshowcontent') ? 0 : 1)),
   );
-  $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable Debug Mode'),
-    '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
-    '#weight' => 15,
-    '#default_value' => variable_get('re_slideshowbase_debug', 0),
-  );
+  if (module_exists('re_slideshowcontent')) {
+    $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable Debug Mode'),
+      '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
+      '#weight' => 15,
+      '#default_value' => variable_get('re_slideshowbase_debug', 0),
+    );
+  }
   re_slideshowbase_register_libraries();
   return system_settings_form($form);
 } // re_slideshowbase_admin()
@@ -82,7 +79,7 @@ function re_slideshowbase_load_resources() {
   // Decide what to do based on which module is in use:
   $library_name = variable_get('re_slideshowbase_library', 'none');
   // Find out if we're supposed to include only the library files:
-  $include_libraries_only = variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshow') ? 0 : 1));
+  $include_libraries_only = variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshowcontent') ? 0 : 1));
   // Which library has been asked for?
   switch ($library_name) {
     case 'none': // If there isn't one...
