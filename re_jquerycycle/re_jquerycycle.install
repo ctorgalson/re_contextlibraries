@@ -1,0 +1,23 @@
+<?php
+/**
+ * @file
+ * Performs any 'first run' or 'last run' operations necessary for the module.
+ * In this case, sets Drupal variables required to use the module on install,
+ * removes them on uninstall.
+ */
+
+
+/**
+ * Implementation of hook_install().
+ */
+function re_jquerycycle_install() {
+  $library = module_invoke('re_jquerycycle', 'define_re_slideshowbase_library');
+} // re_jquerycycle_install()
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function re_jquerycycle_uninstall() {
+  variable_del('re_slideshowbase:re_jquerycycle');
+} // re_jquerycycle_uninstall()

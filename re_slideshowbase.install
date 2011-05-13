@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file
+ * Performs any 'first run' or 'last run' operations necessary for the module.
+ * In this case, sets Drupal variables required to use the module on install,
+ * removes them on uninstall.
+ */
+
+
+/**
+ * Implementation of hook_install().
+ */
+function re_slideshowbase_install() {
+  // Nothing to do :)
+} // re_slideshowbase_install()
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function re_slideshowbase_uninstall() {
+  variable_del('re_slideshowbase_library');
+  variable_del('re_slideshowbase_debug');
+} // re_slideshowbase_uninstall()
