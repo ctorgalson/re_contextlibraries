@@ -10,6 +10,7 @@ Drupal.behaviors.re_jquerycycle = function(context) {
     .after('<div id="re_slideshowbase-view-display-id-block_1-navigation"/>')  
     .cycle({
   		fx: 'scrollVert',
+  		height: 400,
   		pager: '#re_slideshowbase-view-display-id-block_1-navigation',
   		pause: true,
   		pauseOnPagerHover: true
