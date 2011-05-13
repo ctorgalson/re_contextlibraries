@@ -88,36 +88,3 @@
     background: #fff;
     color: #000;
   }
-  
-
-/* @todo: remove these styles to Descartes */
-
-.block .views-admin-links,
-.block .edit {
-  display:none;
-}
-
-.block:hover .views-admin-links,
-.block:hover .edit {
-  background: #fff;
-  border: 1px solid #000;
-  display: block;
-  padding: 10px;
-  position: absolute;
-  top: 10px;
-  z-index: 100;
-}
-
-.block:hover .views-admin-links {
-  left: 10px;
-}
-
-  .block:hover .views-admin-links ul,
-  .block:hover .views-admin-links li {
-    margin: 0;
-    padding: 0;
-  }
-
-.block:hover .edit {
-  right: 10px;
-}

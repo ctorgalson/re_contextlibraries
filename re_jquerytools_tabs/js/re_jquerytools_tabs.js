@@ -3,9 +3,7 @@
  * This file provides whatever javascript logic and functions are necessary for
  * the jquery cycle plugin in the re_slideshowbase module.
  *
- * @see http://malsup.com/jquery/cycle/options.html
- * @todo Make menu-builder into plugin, move it to parent module js, add it to 
- *       function in jquerytools_tabs.module
+ * @see http://flowplayer.org/tools/tabs/index.html#api
  */
 Drupal.behaviors.re_jquerytools_tabs = function(context) {
   // Get the selector:

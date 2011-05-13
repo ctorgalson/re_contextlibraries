@@ -4,7 +4,10 @@
  * This file provides theming functions and other logic for the re_slideshowbase
  * module.
  *
- * @todo Implement hook_perm()
+ * @todo Move preprocess_views_view() function to the feature that provides the
+ *       view!
+ * @todo Move the re_slideshowbase_debug setting to the feature as well (it needs
+ *       the feature to work, but the module itself doesn't).
  */
 
 
@@ -12,6 +15,7 @@
  * Configuration form for administrators:
  */
 function re_slideshowbase_admin() {
+  $path_to_module = drupal_get_path('module', 're_slideshowbase');
   $form = array();
   $form['re_slideshowbase_libraries'] = array(
     '#type' => 'fieldset',
@@ -24,22 +28,43 @@ function re_slideshowbase_admin() {
   $form['re_slideshowbase_libraries']['re_slideshowbase_library'] = array(
     '#type' => 'select',
     '#title' => t('Available libraries'),
-    '#description' => t('The libraries in this list are available for use on this site. Only one library can be used per site.'),
+    '#description' => t("The libraries in this list are available for use on this site. Only one library can be used per site. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_slideshowbase'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
     '#options' => re_slideshowbase_register_libraries(),
     '#weight' => 5,
     '#default_value' => variable_get('re_slideshowbase_library', 'none'),
     '#required' => TRUE,
   );
+  $form['re_slideshowbase_libraries']['re_slideshowbase_libraries_only'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Include Libraries Only'),
+    '#description' => t('Forces library modules to include only javascript library files and not their custom javascripts. If this module is <em>not</em> being used with the RE Slideshow feature, this box should be checked.'),
+    '#weight' =>10,
+    '#default_value' => variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshow') ? 0 : 1)),
+  );
   $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Debug Mode'),
     '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
-    '#weight' =>10,
+    '#weight' =>15,
     '#default_value' => variable_get('re_slideshowbase_debug', 0),
   );
   re_slideshowbase_register_libraries();
   return system_settings_form($form);
 } // re_slideshowbase_admin()
+
+
+/**
+ * Implementation of hook_help().
+ */
+function re_slideshowbase_help($path, $arg) {
+  $path_to_module = drupal_get_path('module', 're_slideshowbase');
+  switch ($path) {
+    case 'admin/help#re_slideshowbase':
+      $output = '<p>'. t("The RE Slideshow Base module provides javascript slideshow libraries for use in the RE Slideshow Feature. The main module can be extended by creating very small library modules that provide additional javascript tools. For information about adding library modules for use with RE Slideshow Base, please consult the module's !readme-file.", array('!readme-file' => l('README file', $path_to_module .'/README.txt'))) .'</p>';
+      break;
+  }
+  return $output;
+} // re_slideshowbase_help()
 
 
 /**
@@ -50,15 +75,15 @@ function re_slideshowbase_admin() {
  * @todo We need to show different messages for users with different permissions
  * @todo We need to load the default css and js--or not--according to settings on
  *       the admin page
- * @todo We need to decide if there's any circumstances at all where we might even
- *       need the default js file (currently the css file is useful, but the js
- *       file is empty
  */
 function re_slideshowbase_load_resources() {
   // We need to know where the module is and where the libraries folder is:
   $path_to_module = drupal_get_path('module', 're_slideshowbase');
   // Decide what to do based on which module is in use:
   $library_name = variable_get('re_slideshowbase_library', 'none');
+  // Find out if we're supposed to include only the library files:
+  $include_libraries_only = variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshow') ? 0 : 1));
+  // Which library has been asked for?
   switch ($library_name) {
     case 'none': // If there isn't one...
       drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
@@ -67,17 +92,19 @@ function re_slideshowbase_load_resources() {
       if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
         // Loop through the available js files and add them:
         foreach ($library_data['js'] as $file) {
-          drupal_add_js($file);
+          if (!$include_libraries_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_slideshowbase.js')) { // DeMorgan!
+            drupal_add_js($file, 'module');
+          }
         }
         // Loop through the available css files and add them:
         foreach ($library_data['css'] as $file) {
-          drupal_add_css($file);
+          drupal_add_css($file, 'module');
         }
       }
       break;
-  }  
-  // Finally, load the base js and css:
-  drupal_add_js($path_to_module .'/js/re_slideshowbase.js', 'module');
+  }
+  // Finally, load the base css--unlike the javascript files, developers can
+  // override this in their theme info files:
   drupal_add_css($path_to_module .'/css/re_slideshowbase.css', 'module');
 } // re_slideshowbase_load_resources()
 
@@ -134,7 +161,7 @@ function re_slideshowbase_preprocess_views_view(&$variables) {
     if (user_access('administer re_slideshowbase')) {
       $library_name = variable_get('re_slideshowbase_library', 'none');
       if (variable_get('re_slideshowbase_debug', 0) && $library_name != 'none') {
-        $debug_message = t('The current library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
+        $debug_message = t('The current slideshow library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
         drupal_set_message($debug_message, 'status', TRUE);
       }
     }

@@ -19,6 +19,7 @@ function re_slideshowbase_install() {
  * Implementation of hook_uninstall().
  */
 function re_slideshowbase_uninstall() {
-  variable_del('re_slideshowbase_library');
   variable_del('re_slideshowbase_debug');
+  variable_del('re_slideshowbase_library');
+  variable_del('re_slideshowbase_libraries_only');
 } // re_slideshowbase_uninstall()
