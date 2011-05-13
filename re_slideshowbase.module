@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 /**
  * @file
  * This file provides theming functions and other logic for the re_slideshowbase
@@ -38,14 +40,14 @@ function re_slideshowbase_admin() {
     '#type' => 'checkbox',
     '#title' => t('Include Libraries Only'),
     '#description' => t('Forces library modules to include only javascript library files and not their custom javascripts. If this module is <em>not</em> being used with the RE Slideshow feature, this box should be checked.'),
-    '#weight' =>10,
+    '#weight' => 10,
     '#default_value' => variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshow') ? 0 : 1)),
   );
   $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Debug Mode'),
     '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
-    '#weight' =>15,
+    '#weight' => 15,
     '#default_value' => variable_get('re_slideshowbase_debug', 0),
   );
   re_slideshowbase_register_libraries();
@@ -73,8 +75,6 @@ function re_slideshowbase_help($path, $arg) {
  * @todo We need to handle the case where the $library_data variable comes up
  *       empty.
  * @todo We need to show different messages for users with different permissions
- * @todo We need to load the default css and js--or not--according to settings on
- *       the admin page
  */
 function re_slideshowbase_load_resources() {
   // We need to know where the module is and where the libraries folder is:

@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 /**
  * @file
  * Provides the jQuery Tools "Tabs" javascript library and styles to the RE Slideshow
