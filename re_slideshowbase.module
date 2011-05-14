@@ -53,6 +53,16 @@ function re_slideshowbase_admin() {
 
 
 /**
+ * Implementation of hook_form_alter().
+ */
+function re_slideshowbase_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 're_slide_node_form' && !module_exists('re_multimediaextras')) {
+    unset($form['field_re_slide_multimedia']);
+  }
+} // re_slideshowbase_form_alter()
+
+
+/**
  * Implementation of hook_help().
  */
 function re_slideshowbase_help($path, $arg) {
@@ -132,23 +142,54 @@ function re_slideshowbase_perm() {
 
 
 /**
+ * Implementation of template_preprocess_semanticviews_view_fields().
+ *
+ * @todo On successful replacement of the image field's content, set all other
+ *       fields' values to empty strings as well
+ * @todo Find out why theme_re_multimediaextras_video_filter_flash() outputs
+ *       the share video content
+ */
+function re_slideshowbase_preprocess_semanticviews_view_fields(&$variables) {
+  // We do nothing unless we're in the right view, AND the multimedia module's
+  // present (unless both conditions are true, the view handles everything
+  // nicely):
+  if (module_exists('re_multimediaextras') && $variables['view']->name == 're_slideshowbase') {
+    // If we have a field called 'nid':
+    if ($variables['fields']['nid']) {
+      // Set the view's image content to the themed value of the multimedia node
+      // indicated by nid:
+      $variables['fields']['field_re_slide_image_fid']->content = theme('re_multimediaextras_video_filter_flash', array('source' => $variables['fields']['nid']->content, 'width' => variable_get('re_multimediaextras_max_slideshow_video_width', RE_MULTIMEDIAEXTRAS_MAX_SLIDESHOW_VIDEO_WIDTH), 'slide' => TRUE));
+      // Then, set the nid field's content to an empty string:
+      $variables['fields']['nid']->content = '';
+    }
+  }
+} // re_slideshowbase_preprocess_views_view_fields()
+
+
+/**
  * Implementation of template_preprocess_views_view().
  *
  * This function handles any preprocessing required for individual views. In
  * this instance, we're really only interested in the re_slideshow view.
+ *
+ * @todo Check for multimedia results in view fields before loading multimedia
+ *       junk.
  */
 function re_slideshowbase_preprocess_views_view(&$variables) {
   // Check to see that this view is the re_slideshow view:
   if ($variables['view']->name == 're_slideshowbase') {
     // We're in the view, now what?
-    // Load whatever resources we need:
-    re_slideshowbase_load_resources();
-    //
-    // We'd also like to figure out what display we're in:
+
+    // Figure out what display we're in:
     $current_display = $variables['view']->current_display;
     // If we're not currently in the weight view, and the user has the appropriate
     // permissions:
     if ($current_display != 'page_1' && user_access('assign node weight') && user_access('edit any re_slide content')) {
+      // Load whatever resources we need:
+      re_slideshowbase_load_resources();
+      if (module_exists('re_multimediaextras')) { // To do: add condition for mm files?
+        re_multimediaextras_load_multimedia_files();
+      }
       // Display a message advertising the sorting view:
       $sorting_message = t('You can change the order of these slides on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
       drupal_set_message($sorting_message, 'status', FALSE);
@@ -181,3 +222,20 @@ function re_slideshowbase_register_libraries() {
   }
   return $library_options;
 } // re_slideshowbase_register_library()
+
+
+/**
+ * Make .tpl.php files provided by module available to theming system.
+ *
+ * @see http://www.agileapproach.com/blog-entry/drupal-6-theming-module-developers-suggesting-tpls-module
+ * @see http://11heavens.com/theming-Drupal-6-from-the-module-layer
+ */
+function re_slideshowbase_theme_registry_alter(&$theme_registry) {
+  // Provide default node template implementations from this module, but make
+  // sure we give a correspodning tpl in a theme folder a chance to override it:
+  $index = array_search('modules/node', $theme_registry['node']['theme paths']);
+  // If 'theme paths' exists:
+  if ($index !== FALSE) {
+    array_splice($theme_registry['node']['theme paths'], $index + 1, 0, drupal_get_path('module', 're_slideshowbase') .'/theme');
+  }
+} // re_slideshowbase_theme_registry_alter()
