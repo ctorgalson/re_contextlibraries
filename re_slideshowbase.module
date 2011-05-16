@@ -98,21 +98,15 @@ function re_slideshowbase_load_resources($library_settings, $context) {
     case 'none': // If there isn't one...
       drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
       break;
-    default: // But if there is one...or more...
-      // There are potentially several messages to display:
-      //
-      // There's the sorting message:
-      if (user_access('assign node weight') && user_access('edit any re_slide content')) {
-        // Display a message advertising the sorting view:
-        $sorting_message = t('You can change the order of these slides on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
-        drupal_set_message($sorting_message, 'status', FALSE);
-      }      
-      // And there's the debug message--unfortunately, there's no specific context
-      // permission for access to the context ui section:
+    default: // But if there is one...or more...     
+      // We need to display the debug message if the user has requested it--
+      // unfortunately, there's no specific context permission for access to the
+      // context ui section:
       if ($library_debug) {
         $debug_message = t('The current slideshow library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
         drupal_set_message($debug_message, 'status', TRUE);
       }
+      // Then, we need to retrieve the library data:
       if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
         // Loop through the available js files and add them:
         foreach ($library_data['js'] as $file) {
