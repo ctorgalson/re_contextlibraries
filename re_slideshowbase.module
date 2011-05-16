@@ -9,47 +9,36 @@
 
 
 /**
- * Configuration form for administrators:
- */
-function re_slideshowbase_admin() {
-  $path_to_module = drupal_get_path('module', 're_slideshowbase');
-  $form = array();
-  $form['re_slideshowbase_libraries'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('RE Slideshow Base library settings'),
-    '#description' => t('Settings related to external javascript libraries used by the RE Slideshow Base module'),
-    '#weight' => 5,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
+ * Implementation of hook_context_plugins().
+ */ 
+function re_slideshowbase_context_plugins() {
+  $plugins = array();
+  $plugins['context_reaction_re_slideshowbase_includelibraries'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 're_slideshowbase') .'/context',
+      'file' => 'context_reaction_re_slideshowbase_includelibraries.inc',
+      'class' => 'context_reaction_re_slideshowbase_includelibraries',
+      'parent' => 'context_reaction',      
+    ),
   );
-  $form['re_slideshowbase_libraries']['re_slideshowbase_library'] = array(
-    '#type' => 'select',
-    '#title' => t('Available libraries'),
-    '#description' => t("The libraries in this list are available for use on this site. Only one library can be used per site. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_slideshowbase'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
-    '#options' => re_slideshowbase_register_libraries(),
-    '#weight' => 5,
-    '#default_value' => variable_get('re_slideshowbase_library', 'none'),
-    '#required' => TRUE,
+  return $plugins;
+} // re_slideshowbase_context_plugins()
+
+
+/**
+ * Implementation of hook_context_registry().
+ */ 
+function re_slideshowbase_context_registry() {
+  return array(
+    'reactions' => array(
+      'includelibraries' => array(
+        'title' => t('Include libraries'),
+        'description' => t('Include description of library inclusion here'),
+        'plugin' => 'context_reaction_re_slideshowbase_includelibraries',
+      ),    
+    ),
   );
-  $form['re_slideshowbase_libraries']['re_slideshowbase_libraries_only'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Include Libraries Only'),
-    '#description' => t('Forces library modules to include only javascript library files and not their custom javascripts. If this module is <em>not</em> being used with the RE Slideshow feature, this box should be checked.'),
-    '#weight' => 10,
-    '#default_value' => variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshowcontent') ? 0 : 1)),
-  );
-  if (module_exists('re_slideshowcontent')) {
-    $form['re_slideshowbase_libraries']['re_slideshowbase_debug'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Enable Debug Mode'),
-      '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
-      '#weight' => 15,
-      '#default_value' => variable_get('re_slideshowbase_debug', 0),
-    );
-  }
-  re_slideshowbase_register_libraries();
-  return system_settings_form($form);
-} // re_slideshowbase_admin()
+} // re_slideshowbase_context_registry()
 
 
 /**
@@ -76,18 +65,32 @@ function re_slideshowbase_help($path, $arg) {
 } // re_slideshowbase_help()
 
 
+/** 
+ * Implementation of hook_init()
+ */
+function re_slideshowbase_init() {
+  $plugin = context_get_plugin('reaction', 'includelibraries');
+  if ($plugin) {
+    $plugin->execute();
+  }
+} // re_slideshowbase_init()
+
+
 /**
  * Load all the necessary files to allow us to play slides.
  *
- * @todo We need to handle the case where the $library_data variable comes up
- *       empty.
- * @todo We need to show different messages for users with different permissions
+ * @param array $library_settings The array of library settings for this context
+ * @param object $context The current context
  */
-function re_slideshowbase_load_resources() {
+function re_slideshowbase_load_resources($library_settings, $context) {
+  // Convenience variables from incoming array:
+  $library_name = $library_settings['library_name'];
+  $library_only = $library_settings['library_only'];
+  $library_debug = $library_settings['library_debug'];
   // We need to know where the module is and where the libraries folder is:
   $path_to_module = drupal_get_path('module', 're_slideshowbase');
   // Decide what to do based on which module is in use:
-  $library_name = variable_get('re_slideshowbase_library', 'none');
+  //$library_name = variable_get('re_slideshowbase_library', 'none');
   // Find out if we're supposed to include only the library files:
   $include_libraries_only = variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshowcontent') ? 0 : 1));
   // Which library has been asked for?
@@ -96,10 +99,24 @@ function re_slideshowbase_load_resources() {
       drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
       break;
     default: // But if there is one...or more...
+      // There are potentially several messages to display:
+      //
+      // There's the sorting message:
+      if (user_access('assign node weight') && user_access('edit any re_slide content')) {
+        // Display a message advertising the sorting view:
+        $sorting_message = t('You can change the order of these slides on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
+        drupal_set_message($sorting_message, 'status', FALSE);
+      }      
+      // And there's the debug message--unfortunately, there's no specific context
+      // permission for access to the context ui section:
+      if ($library_debug) {
+        $debug_message = t('The current slideshow library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
+        drupal_set_message($debug_message, 'status', TRUE);
+      }
       if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
         // Loop through the available js files and add them:
         foreach ($library_data['js'] as $file) {
-          if (!$include_libraries_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_slideshowbase.js')) { // DeMorgan!
+          if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_slideshowbase.js')) { // DeMorgan!
             drupal_add_js($file, 'module');
           }
         }
@@ -117,94 +134,11 @@ function re_slideshowbase_load_resources() {
 
 
 /**
- * Implementation of hook_menu().
- */
-function re_slideshowbase_menu() {
-  $items = array();
-  $items['admin/settings/re_slideshowbase'] = array(
-    'title' => 'RE Slideshow Base',
-    'description' => 'Configuration form for for RE Slideshow Base module',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('re_slideshowbase_admin'),
-    'access arguments' => array('administer re_slideshowbase'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-  return $items;
-} // re_slideshowbase_menu()
-
-
-/**
  * Implementation of hook_perm().
  */
 function re_slideshowbase_perm() {
   return array('administer re_slideshowbase');
 } // re_slideshowbase_perm()
-
-
-/**
- * Implementation of template_preprocess_semanticviews_view_fields().
- *
- * @todo On successful replacement of the image field's content, set all other
- *       fields' values to empty strings as well
- * @todo Find out why theme_re_multimediaextras_video_filter_flash() outputs
- *       the share video content
- */
-function re_slideshowbase_preprocess_semanticviews_view_fields(&$variables) {
-  // We do nothing unless we're in the right view, AND the multimedia module's
-  // present (unless both conditions are true, the view handles everything
-  // nicely):
-  if (module_exists('re_multimediaextras') && $variables['view']->name == 're_slideshowbase') {
-    // If we have a field called 'nid':
-    if ($variables['fields']['nid']) {
-      // Set the view's image content to the themed value of the multimedia node
-      // indicated by nid:
-      $variables['fields']['field_re_slide_image_fid']->content = theme('re_multimediaextras_video_filter_flash', array('source' => $variables['fields']['nid']->content, 'width' => variable_get('re_multimediaextras_max_slideshow_video_width', RE_MULTIMEDIAEXTRAS_MAX_SLIDESHOW_VIDEO_WIDTH), 'slide' => TRUE));
-      // Then, set the nid field's content to an empty string:
-      $variables['fields']['nid']->content = '';
-    }
-  }
-} // re_slideshowbase_preprocess_views_view_fields()
-
-
-/**
- * Implementation of template_preprocess_views_view().
- *
- * This function handles any preprocessing required for individual views. In
- * this instance, we're really only interested in the re_slideshow view.
- *
- * @todo Check for multimedia results in view fields before loading multimedia
- *       junk.
- */
-function re_slideshowbase_preprocess_views_view(&$variables) {
-  // Check to see that this view is the re_slideshow view:
-  if ($variables['view']->name == 're_slideshowbase') {
-    // We're in the view, now what?
-
-    // Figure out what display we're in:
-    $current_display = $variables['view']->current_display;
-    // If we're not currently in the weight view, and the user has the appropriate
-    // permissions:
-    if ($current_display != 'page_1' && user_access('assign node weight') && user_access('edit any re_slide content')) {
-      // Load whatever resources we need:
-      re_slideshowbase_load_resources();
-      if (module_exists('re_multimediaextras')) { // To do: add condition for mm files?
-        re_multimediaextras_load_multimedia_files();
-      }
-      // Display a message advertising the sorting view:
-      $sorting_message = t('You can change the order of these slides on the !sorting-page.', array('!sorting-page' => l('sorting page', $variables['view']->display['page_1']->display_options['path'])));
-      drupal_set_message($sorting_message, 'status', FALSE);
-    }
-    // Display a message indicating which library is in use--if the user is
-    // sufficiently trustworthy :)
-    if (user_access('administer re_slideshowbase')) {
-      $library_name = variable_get('re_slideshowbase_library', 'none');
-      if (variable_get('re_slideshowbase_debug', 0) && $library_name != 'none') {
-        $debug_message = t('The current slideshow library is provided by the %library module. You can change this on the !settings-page.', array('%library' => $library_name, '!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase')));
-        drupal_set_message($debug_message, 'status', TRUE);
-      }
-    }
-  }
-} // re_slideshowbase_preprocess_views_view()
 
 
 /**
@@ -222,20 +156,3 @@ function re_slideshowbase_register_libraries() {
   }
   return $library_options;
 } // re_slideshowbase_register_library()
-
-
-/**
- * Make .tpl.php files provided by module available to theming system.
- *
- * @see http://www.agileapproach.com/blog-entry/drupal-6-theming-module-developers-suggesting-tpls-module
- * @see http://11heavens.com/theming-Drupal-6-from-the-module-layer
- */
-function re_slideshowbase_theme_registry_alter(&$theme_registry) {
-  // Provide default node template implementations from this module, but make
-  // sure we give a correspodning tpl in a theme folder a chance to override it:
-  $index = array_search('modules/node', $theme_registry['node']['theme paths']);
-  // If 'theme paths' exists:
-  if ($index !== FALSE) {
-    array_splice($theme_registry['node']['theme paths'], $index + 1, 0, drupal_get_path('module', 're_slideshowbase') .'/theme');
-  }
-} // re_slideshowbase_theme_registry_alter()
