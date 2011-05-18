@@ -13,7 +13,7 @@
  * Implementation of hook_install().
  */
 function re_jquerycycle_install() {
-  $library = module_invoke('re_jquerycycle', 'define_re_slideshowbase_library');
+  $library = module_invoke('re_jquerycycle', 'define_re_contextlibraries_library');
 } // re_jquerycycle_install()
 
 
@@ -21,5 +21,5 @@ function re_jquerycycle_install() {
  * Implementation of hook_uninstall().
  */
 function re_jquerycycle_uninstall() {
-  variable_del('re_slideshowbase:re_jquerycycle');
+  variable_del('re_contextlibraries:re_jquerycycle');
 } // re_jquerycycle_uninstall()

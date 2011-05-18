@@ -2,7 +2,7 @@
       section onwards!
       
 
-RE SLIDESHOW BASE README.txt
+RE Context Libraries README.txt
 --------------------------------------------------------------------------------
 
 NOTES
@@ -26,7 +26,7 @@ INSTALLATION
 CONFIGURATION
 
 
-1.  Visit the RE Slideshow Base administration page at admin/settings/re_slideshowbase
+1.  Visit the RE Context Libraries administration page at admin/settings/re_contextlibraries
     and select the library module to be used.
 
 
@@ -40,8 +40,8 @@ the slideshow should work as soon as step 1 under "Configuration" (above) has
 been performed.
 
 If your theme does not include a region called "Pre Content", edit the context
-provided by the RE Slideshow feature "re_slideshowbase_homepage" or enable the
-block "re_slideshowbase: Block (main slideshow)" in your own context or enable
+provided by the RE Slideshow feature "re_contextlibraries_homepage" or enable the
+block "re_contextlibraries: Block (main slideshow)" in your own context or enable
 it in the blocks administration page.
 
 
@@ -57,7 +57,7 @@ from a multiple CCK field.
 1.  Install and configure the module as above, but make sure that the checkbox
     labelled "Include Libraries Only" is checked.
 
-2.  In your theme's template.php file, call re_slideshowbase_load_resources().
+2.  In your theme's template.php file, call re_contextlibraries_load_resources().
     (Note: this should probably be called from one of the preprocess functions,
     but which one you use depends on circumstances specific to your site and
     theme).
@@ -79,9 +79,9 @@ from a multiple CCK field.
     will be using it with (the provided custom javascript files include a comment
     indicating where the particular library's API documentation can be found).
     
-6.  (Optional). You can override the CSS files provided by the RE Slideshow Base
+6.  (Optional). You can override the CSS files provided by the RE Context Libraries
     module and library modules by adding lines to your theme's .info file like
-    "styles[] = re_slideshowbase.css" or "styles[] = modulename.css" (without
+    "styles[] = re_contextlibraries.css" or "styles[] = modulename.css" (without
     quotation marks). If these lines are present, and no such file is found in
     the theme, the modules' CSS files won't be included in the page! (This is
     standard Drupal theme behaviour).
@@ -92,7 +92,7 @@ CREATING LIBRARY MODULES
 
 Required Files and Directories:
 
-A library module for the RE Slideshow Base module should include the following
+A library module for the RE Context Libraries module should include the following
 files and directories. In this section, we assume name of the library module is
 "module_name".
 
@@ -120,9 +120,9 @@ module_name
       ;$Id$
 
       name = 'RE jQuery Cycle'
-      description = 'Provides the Module Name javascript library and styles to the RE Slideshow Base module.'
+      description = 'Provides the Module Name javascript library and styles to the RE Context Libraries module.'
       package = 'Raised Eyebrow Custom Modules'
-      dependencies[] = re_slideshowbase
+      dependencies[] = re_contextlibraries
       core = 6.x
       php = 5.2
       version = 6.x-1.0
@@ -130,7 +130,7 @@ module_name
       
   module_name.module
   
-    the module file needs only to implement hook_define_re_slideshowbase_library()
+    the module file needs only to implement hook_define_re_contextlibraries_library()
     function; it should look like this:
     
       <?php
@@ -142,9 +142,9 @@ module_name
       
       
       /**
-       * Implementation of hook_define_re_slideshowbase_library()
+       * Implementation of hook_define_re_contextlibraries_library()
        */
-      function module_name_define_re_slideshowbase_library() {
+      function module_name_define_re_contextlibraries_library() {
         $path_to_module = drupal_get_path('module', 'module_name');
         $library = array(
           're_module_name' => array(
@@ -159,7 +159,7 @@ module_name
           ),
         );
         return $library;
-      } // module_name_define_re_slideshowbase_library()
+      } // module_name_define_re_contextlibraries_library()
  
  
   module_name.install
@@ -180,7 +180,7 @@ module_name
        * Implementation of hook_install().
        */
       function module_name_install() {
-        $library = module_invoke('module_name', 'define_re_slideshowbase_library');
+        $library = module_invoke('module_name', 'define_re_contextlibraries_library');
       } // module_name_install()
       
       
@@ -188,5 +188,5 @@ module_name
        * Implementation of hook_uninstall().
        */
       function module_name_uninstall() {
-        variable_del('re_slideshowbase:module_name');
+        variable_del('re_contextlibraries:module_name');
       } // module_name_uninstall()

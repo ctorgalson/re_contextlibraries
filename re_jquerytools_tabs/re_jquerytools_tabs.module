@@ -3,22 +3,22 @@
 
 /**
  * @file
- * Provides the jQuery Tools "Tabs" javascript library and styles to the RE Slideshow
- * Base module.
+ * Provides the jQuery Tools "Tabs" javascript library and styles to the RE Context
+ * Libraries module.
  */
 
 
 /**
- * Implementation of hook_define_re_slideshowbase_library().
+ * Implementation of hook_define_re_contextlibraries_library().
  */
-function re_jquerytools_tabs_define_re_slideshowbase_library() {
-  $path_to_parent_module = drupal_get_path('module', 're_slideshowbase');
+function re_jquerytools_tabs_define_re_contextlibraries_library() {
+  $path_to_parent_module = drupal_get_path('module', 're_contextlibraries');
   $path_to_module = drupal_get_path('module', 're_jquerytools_tabs');
   $library = array(
     're_jquerytools_tabs' => array(
       'name' => 'jQuery Tools Tabs (provided by: re_jquerytools_tabs)',
       'js' => array(
-        $path_to_parent_module .'/js/re_slideshowbase.js',
+        $path_to_parent_module .'/js/re_contextlibraries.js',
         $path_to_module .'/js/jquery.tools.min.js',
         $path_to_module .'/js/re_jquerytools_tabs.js',
       ),
@@ -28,4 +28,4 @@ function re_jquerytools_tabs_define_re_slideshowbase_library() {
     ),
   );
   return $library;
-} // re_jquerytools_tabs_define_re_slideshowbase_library()
+} // re_jquerytools_tabs_define_re_contextlibraries_library()

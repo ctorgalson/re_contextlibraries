@@ -8,23 +8,23 @@
 /**
  * Output context debug information.
  */ 
-class context_reaction_re_slideshowbase_includelibraries extends context_reaction {
+class context_reaction_re_contextlibraries_includelibraries extends context_reaction {
   /**
    * This function provides the settings form for the given context:
    */
   function options_form($context) {
-    $path_to_module = drupal_get_path('module', 're_slideshowbase');
+    $path_to_module = drupal_get_path('module', 're_contextlibraries');
     // Include ui elements:
     drupal_add_js($path_to_module .'/context/contextReactionIncludeLibraries.js', 'module');
     $values = $this->fetch_from_context($context);
     $form = array(
       '#tree' => TRUE,
-      '#title' => t('RE Slideshow Base Context Settings'),
+      '#title' => t('RE Context Libraries Context Settings'),
       'library_name' => array(
         '#type' => 'select',
         '#title' => t('Available libraries'),
-        '#description' => t("The libraries in this list are available for use on this site. Only one library can be used per site. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_slideshowbase'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
-        '#options' => re_slideshowbase_register_libraries(),
+        '#description' => t("The libraries in this list are available for use on this site. Only one library can be used per site. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_contextlibraries'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
+        '#options' => re_contextlibraries_register_libraries(),
         '#default_value' => isset($values['library_name']) ? $values['library_name'] : '',
         '#required' => TRUE,
         '#weight' => 5,
@@ -47,7 +47,7 @@ class context_reaction_re_slideshowbase_includelibraries extends context_reactio
       'library_debug' => array(
         '#type' => 'checkbox',
         '#title' => t('Enable Debug Mode'),
-        '#description' => t('In Debug Mode, the slideshow will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_slideshowbase" permission.'),
+        '#description' => t('In Debug Mode, the context will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_contextlibraries" permission.'),
         '#weight' => 20,
         '#default_value' => isset($values['library_debug']) ? $values['library_debug'] : '',
       )      
@@ -64,8 +64,8 @@ class context_reaction_re_slideshowbase_includelibraries extends context_reactio
     foreach ($contexts as $context) {
       $library_settings = $this->fetch_from_context($context);
       if (!empty($context->reactions['includelibraries'])) {
-        re_slideshowbase_load_resources($library_settings, $context);
+        re_contextlibraries_load_resources($library_settings, $context);
       }
     }
   } // execute()
-} // context_reaction_re_slideshowbase_includelibraries
+} // context_reaction_re_contextlibraries_includelibraries

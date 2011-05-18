@@ -1,7 +1,7 @@
 ;$Id$
 
-name = 'RE Slideshow Base'
-description = 'Provides a base module for adding javascript slideshow modules to Drupal views'
+name = 'RE Context Libraries'
+description = 'Provides a base module for adding javascript libraries using Context'
 package = 'Raised Eyebrow Custom Modules'
 dependencies[] = context
 dependencies[] = jquery_update

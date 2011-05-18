@@ -12,14 +12,14 @@
 /**
  * Implementation of hook_install().
  */
-function re_slideshowbase_install() {
+function re_contextlibraries_install() {
   // Nothing to do :)
-} // re_slideshowbase_install()
+} // re_contextlibraries_install()
 
 
 /**
  * Implementation of hook_uninstall().
  */
-function re_slideshowbase_uninstall() {
+function re_contextlibraries_uninstall() {
   // Nothing to do here either :)
-} // re_slideshowbase_uninstall()
+} // re_contextlibraries_uninstall()

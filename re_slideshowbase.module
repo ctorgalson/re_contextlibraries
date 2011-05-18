@@ -3,77 +3,77 @@
 
 /**
  * @file
- * This file provides theming functions and other logic for the re_slideshowbase
- * module.
+ * This file provides context plugins, logic, and standard hook implementations
+ * for the re_contextlibraries module.
  */
 
 
 /**
  * Implementation of hook_context_plugins().
  */ 
-function re_slideshowbase_context_plugins() {
+function re_contextlibraries_context_plugins() {
   $plugins = array();
-  $plugins['context_reaction_re_slideshowbase_includelibraries'] = array(
+  $plugins['context_reaction_re_contextlibraries_includelibraries'] = array(
     'handler' => array(
-      'path' => drupal_get_path('module', 're_slideshowbase') .'/context',
-      'file' => 'context_reaction_re_slideshowbase_includelibraries.inc',
-      'class' => 'context_reaction_re_slideshowbase_includelibraries',
+      'path' => drupal_get_path('module', 're_contextlibraries') .'/context',
+      'file' => 'context_reaction_re_contextlibraries_includelibraries.inc',
+      'class' => 'context_reaction_re_contextlibraries_includelibraries',
       'parent' => 'context_reaction',      
     ),
   );
   return $plugins;
-} // re_slideshowbase_context_plugins()
+} // re_contextlibraries_context_plugins()
 
 
 /**
  * Implementation of hook_context_registry().
  */ 
-function re_slideshowbase_context_registry() {
+function re_contextlibraries_context_registry() {
   return array(
     'reactions' => array(
       'includelibraries' => array(
         'title' => t('Include libraries'),
         'description' => t('Include description of library inclusion here'),
-        'plugin' => 'context_reaction_re_slideshowbase_includelibraries',
+        'plugin' => 'context_reaction_re_contextlibraries_includelibraries',
       ),    
     ),
   );
-} // re_slideshowbase_context_registry()
+} // re_contextlibraries_context_registry()
 
 
 /**
  * Implementation of hook_form_alter().
  */
-function re_slideshowbase_form_alter(&$form, &$form_state, $form_id) {
+function re_contextlibraries_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 're_slide_node_form' && !module_exists('re_multimediaextras')) {
     unset($form['field_re_slide_multimedia']);
   }
-} // re_slideshowbase_form_alter()
+} // re_contextlibraries_form_alter()
 
 
 /**
  * Implementation of hook_help().
  */
-function re_slideshowbase_help($path, $arg) {
-  $path_to_module = drupal_get_path('module', 're_slideshowbase');
+function re_contextlibraries_help($path, $arg) {
+  $path_to_module = drupal_get_path('module', 're_contextlibraries');
   switch ($path) {
-    case 'admin/help#re_slideshowbase':
-      $output = '<p>'. t("The RE Slideshow Base module provides javascript slideshow libraries for use in the RE Slideshow Feature. The main module can be extended by creating very small library modules that provide additional javascript tools. For information about adding library modules for use with RE Slideshow Base, please consult the module's !readme-file.", array('!readme-file' => l('README file', $path_to_module .'/README.txt'))) .'</p>';
+    case 'admin/help#re_contextlibraries':
+      $output = '<p>'. t("The RE Context Libraries module provides javascript libraries for use in the Contexts. The main module can be extended by creating very small library modules that provide additional javascript tools. For information about adding library modules for use with RE Context Libraries, please consult the module's !readme-file.", array('!readme-file' => l('README file', $path_to_module .'/README.txt'))) .'</p>';
       break;
   }
   return $output;
-} // re_slideshowbase_help()
+} // re_contextlibraries_help()
 
 
 /** 
  * Implementation of hook_init()
  */
-function re_slideshowbase_init() {
+function re_contextlibraries_init() {
   $plugin = context_get_plugin('reaction', 'includelibraries');
   if ($plugin) {
     $plugin->execute();
   }
-} // re_slideshowbase_init()
+} // re_contextlibraries_init()
 
 
 /**
@@ -82,32 +82,32 @@ function re_slideshowbase_init() {
  * @param array $library_settings The array of library settings for this context
  * @param object $context The current context
  */
-function re_slideshowbase_load_resources($library_settings, $context) {
+function re_contextlibraries_load_resources($library_settings, $context) {
   // Convenience variables from incoming array:
   $library_name = $library_settings['library_name'];
   $library_only = $library_settings['library_only'];
   $library_custom = $library_settings['library_custom'];
   $library_debug = $library_settings['library_debug'];
   // We need to know where the module is and where the libraries folder is:
-  $path_to_module = drupal_get_path('module', 're_slideshowbase');
+  $path_to_module = drupal_get_path('module', 're_contextlibraries');
   // Which library has been asked for?
   switch ($library_name) {
     case 'none': // If there isn't one...
-      drupal_set_message(t('No slideshow library has been set for the RE Slideshow Base module. You can choose one at the !settings-page. If you do not have access to this page, please contact an administrator.', array('!settings-page' => l('RE Slideshow Base settings page', 'admin/settings/re_slideshowbase'))), 'error');
+      drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit'))), 'error');
       break;
     default: // But if there is one...or more...     
       // We need to display the debug message if the user has requested it--
       // unfortunately, there's no specific context permission for access to the
       // context ui section:
       if ($library_debug) {
-        $debug_message = t('The current slideshow library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
+        $debug_message = t('The current javascript library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
         drupal_set_message($debug_message, 'status', TRUE);
       }
       // Then, we need to retrieve the library data:
-      if ($library_data = variable_get('re_slideshowbase:'. $library_name, 'none')) {
+      if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
         // Loop through the available js files and add them:
         foreach ($library_data['js'] as $file) {
-          if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_slideshowbase.js')) { // DeMorgan!
+          if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
             drupal_add_js($file, 'module');
           }
         }
@@ -125,30 +125,30 @@ function re_slideshowbase_load_resources($library_settings, $context) {
   }
   // Finally, load the base css--unlike the javascript files, developers can
   // override this in their theme info files:
-  drupal_add_css($path_to_module .'/css/re_slideshowbase.css', 'module');
-} // re_slideshowbase_load_resources()
+  drupal_add_css($path_to_module .'/css/re_contextlibraries.css', 'module');
+} // re_contextlibraries_load_resources()
 
 
 /**
  * Implementation of hook_perm().
  */
-function re_slideshowbase_perm() {
-  return array('administer re_slideshowbase');
-} // re_slideshowbase_perm()
+function re_contextlibraries_perm() {
+  return array('administer re_contextlibraries');
+} // re_contextlibraries_perm()
 
 
 /**
  * Registers available libraries provided by other modules:
  */
-function re_slideshowbase_register_libraries() {
-  // Find out about all the slideshow libraries available:
-  $libraries = module_invoke_all('define_re_slideshowbase_library');
+function re_contextlibraries_register_libraries() {
+  // Find out about all the libraries available:
+  $libraries = module_invoke_all('define_re_contextlibraries_library');
   // Then set variables for each of them, and collect the names only in an array
   // suitable for use in a forms api select:
   $library_options = array('' => 'None');
   foreach ($libraries as $library => $files) {
-    variable_set('re_slideshowbase:'. $library, $files);
+    variable_set('re_contextlibraries:'. $library, $files);
     $library_options[$library] = $files['name'];
   }
   return $library_options;
-} // re_slideshowbase_register_library()
+} // re_contextlibraries_register_library()

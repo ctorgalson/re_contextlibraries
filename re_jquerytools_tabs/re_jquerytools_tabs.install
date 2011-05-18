@@ -13,7 +13,7 @@
  * Implementation of hook_install().
  */
 function re_jquerytools_tabs_install() {
-  $library = module_invoke('re_jquerytools_tabs', 'define_re_slideshowbase_library');
+  $library = module_invoke('re_jquerytools_tabs', 'define_re_contextlibraries_library');
 } // re_jquerytools_tabs_install()
 
 
@@ -21,5 +21,5 @@ function re_jquerytools_tabs_install() {
  * Implementation of hook_uninstall().
  */
 function re_jquerytools_tabs_uninstall() {
-  variable_del('re_slideshowbase:re_jquerytools_tabs');
+  variable_del('re_contextlibraries:re_jquerytools_tabs');
 } // re_jquerytools_tabs_uninstall()

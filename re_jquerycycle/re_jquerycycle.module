@@ -3,15 +3,15 @@
 
 /**
  * @file
- * Provides the jQuery Cycle javascript library and styles to the RE Slideshow
- * Base module.
+ * Provides the jQuery Cycle javascript library and styles to the RE Context
+ * Libraries module.
  */
 
 
 /**
- * Implementation of hook_define_re_slideshowbase_library()
+ * Implementation of hook_define_re_contextlibraries_library()
  */
-function re_jquerycycle_define_re_slideshowbase_library() {
+function re_jquerycycle_define_re_contextlibraries_library() {
   $path_to_module = drupal_get_path('module', 're_jquerycycle');
   $library = array(
     're_jquerycycle' => array(
@@ -27,4 +27,4 @@ function re_jquerycycle_define_re_slideshowbase_library() {
     ),
   );
   return $library;
-} // re_jquerycycle_define_re_slideshowbase_library()
+} // re_jquerycycle_define_re_contextlibraries_library()

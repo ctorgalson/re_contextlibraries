@@ -9,10 +9,10 @@
   * This function builds, and returns, a generic menu based on the items in a
   * list.
   */
- $.re_slideshowbase_menu = function(options) {  
+ $.re_contextlibraries_menu = function(options) {  
     var defaults = {
-          slideSelector: '#block-views-re_slideshowbase-block_1 .view-display-id-block_1 > .view-content > ul > li',
-          navItemParent: '<div id="re_slideshowbase-view-display-id-block_1-navigation" class="foo" />',
+          slideSelector: '#block-views-re_contextlibraries-block_1 .view-display-id-block_1 > .view-content > ul > li',
+          navItemParent: '<div id="re_contextlibraries-view-display-id-block_1-navigation" class="foo" />',
           navItem: '<a href="#" />'
         },
         options = $.extend(defaults, options),
@@ -22,5 +22,5 @@
         });
       return $navElement;
  };
- /* $.re_slideshowbase_menu */  
+ /* $.re_contextlibraries_menu */  
 })(jQuery);
