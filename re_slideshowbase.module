@@ -86,13 +86,10 @@ function re_slideshowbase_load_resources($library_settings, $context) {
   // Convenience variables from incoming array:
   $library_name = $library_settings['library_name'];
   $library_only = $library_settings['library_only'];
+  $library_custom = $library_settings['library_custom'];
   $library_debug = $library_settings['library_debug'];
   // We need to know where the module is and where the libraries folder is:
   $path_to_module = drupal_get_path('module', 're_slideshowbase');
-  // Decide what to do based on which module is in use:
-  //$library_name = variable_get('re_slideshowbase_library', 'none');
-  // Find out if we're supposed to include only the library files:
-  $include_libraries_only = variable_get('re_slideshowbase_libraries_only', (module_exists('re_slideshowcontent') ? 0 : 1));
   // Which library has been asked for?
   switch ($library_name) {
     case 'none': // If there isn't one...
@@ -113,6 +110,11 @@ function re_slideshowbase_load_resources($library_settings, $context) {
           if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_slideshowbase.js')) { // DeMorgan!
             drupal_add_js($file, 'module');
           }
+        }
+        // Finally, if specified, we need to add the custom js module to the js array:
+        if ($library_custom) {
+          $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
+          drupal_add_js($path_to_file, 'module');
         }
         // Loop through the available css files and add them:
         foreach ($library_data['css'] as $file) {
