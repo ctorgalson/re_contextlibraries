@@ -111,7 +111,7 @@ function re_slideshowbase_load_resources($library_settings, $context) {
             drupal_add_js($file, 'module');
           }
         }
-        // Finally, if specified, we need to add the custom js module to the js array:
+        // Finally, if specified, we need to add the custom js file to the js array:
         if ($library_custom) {
           $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
           drupal_add_js($path_to_file, 'module');
