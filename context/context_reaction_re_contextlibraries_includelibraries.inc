@@ -15,7 +15,7 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
   function options_form($context) {
     $path_to_module = drupal_get_path('module', 're_contextlibraries');
     // Include ui elements:
-    drupal_add_js($path_to_module .'/context/contextReactionIncludeLibraries.js', 'module');
+    drupal_add_js($path_to_module .'/js/contextReactionIncludeLibraries.js', 'module');
     $values = $this->fetch_from_context($context);
     $form = array(
       '#tree' => TRUE,

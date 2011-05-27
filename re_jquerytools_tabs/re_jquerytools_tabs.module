@@ -18,7 +18,6 @@ function re_jquerytools_tabs_define_re_contextlibraries_library() {
     're_jquerytools_tabs' => array(
       'name' => 'jQuery Tools Tabs (provided by: re_jquerytools_tabs)',
       'js' => array(
-        $path_to_parent_module .'/js/re_contextlibraries.js',
         $path_to_module .'/js/jquery.tools.min.js',
         $path_to_module .'/js/re_jquerytools_tabs.js',
       ),
