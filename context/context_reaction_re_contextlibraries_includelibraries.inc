@@ -6,7 +6,7 @@
 
 
 /**
- * Output context debug information.
+ * Output available libraries, configuration options for the current context.
  */ 
 class context_reaction_re_contextlibraries_includelibraries extends context_reaction {
   /**
@@ -23,9 +23,11 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
       'library_name' => array(
         '#type' => 'select',
         '#title' => t('Available libraries'),
-        '#description' => t("The libraries in this list are available for use on this site. Only one library can be used per site. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_contextlibraries'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
+        '#description' => t("The libraries in this list are available for use in this context. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l('help page', 'admin/help/re_contextlibraries'), '!readme-file' => l('README file', $path_to_module .'/README.txt'))),
         '#options' => re_contextlibraries_register_libraries(),
         '#default_value' => isset($values['library_name']) ? $values['library_name'] : '',
+        '#size' => 5,
+        '#multiple' => TRUE,
         '#weight' => 5,
       ),
       'library_only' => array(

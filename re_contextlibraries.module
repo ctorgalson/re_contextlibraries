@@ -74,48 +74,47 @@ function re_contextlibraries_init() {
  */
 function re_contextlibraries_load_resources($library_settings, $context) {
   // Convenience variables from incoming array:
-  $library_name = $library_settings['library_name'];
+  $library_names = $library_settings['library_name'];
   $library_only = $library_settings['library_only'];
   $library_custom = $library_settings['library_custom'];
   $library_debug = $library_settings['library_debug'];
   // We need to know where the module is and where the libraries folder is:
   $path_to_module = drupal_get_path('module', 're_contextlibraries');
   // Which library has been asked for?
-  switch ($library_name) {
+  switch ($library_names) {
     case 'none': // If there isn't one...
       drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit'))), 'error');
       break;
     default: // But if there is one...or more...     
-      // We need to display the debug message if the user has requested it--
-      // unfortunately, there's no specific context permission for access to the
-      // context ui section:
-      if ($library_debug) {
-        $debug_message = t('The current javascript library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
-        drupal_set_message($debug_message, 'status', TRUE);
-      }
-      // Then, we need to retrieve the library data:
-      if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
-        // Loop through the available js files and add them:
-        foreach ($library_data['js'] as $file) {
-          if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
-            drupal_add_js($file, 'module');
+      foreach ($library_names as $library_name) {
+        // We need to display the debug message if the user has requested it--
+        // unfortunately, there's no specific context permission for access to the
+        // context ui section:
+        if ($library_debug) {
+          $debug_message = t('The current javascript library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
+          drupal_set_message($debug_message, 'status', TRUE);
+        }
+        // Then, we need to retrieve the library data:
+        if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
+          // Loop through the available js files and add them:
+          foreach ($library_data['js'] as $file) {
+            if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
+              drupal_add_js($file, 'module');
+            }
           }
-        }
-        // Finally, if specified, we need to add the custom js file to the js array:
-        if ($library_custom) {
-          $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
-          drupal_add_js($path_to_file, 'module');
-        }
-        // Loop through the available css files and add them:
-        foreach ($library_data['css'] as $file) {
-          drupal_add_css($file, 'module');
+          // Finally, if specified, we need to add the custom js file to the js array:
+          if ($library_custom) {
+            $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
+            drupal_add_js($path_to_file, 'module');
+          }
+          // Loop through the available css files and add them:
+          foreach ($library_data['css'] as $file) {
+            drupal_add_css($file, 'module');
+          }
         }
       }
       break;
   }
-  // Finally, load the base css--unlike the javascript files, developers can
-  // override this in their theme info files:
-  drupal_add_css($path_to_module .'/css/re_contextlibraries.css', 'module');
 } // re_contextlibraries_load_resources()
 
 

@@ -8,26 +8,6 @@
  *
  * @see http://flowplayer.org/tools/tabs/index.html#api
  */
-
-
-/**
- * This function builds, and returns, a generic menu based on the items in a
- * list.
- */
-$.re_jquerytools_tabs_menu = function(options) {  
-  var defaults = {
-        slideSelector: '#block-views-re_contextlibraries-block_1 .view-display-id-block_1 > .view-content > ul > li',
-        navItemParent: '<div id="re_contextlibraries-view-display-id-block_1-navigation" class="foo" />',
-        navItem: '<a href="#" />'
-      },
-      options = $.extend(defaults, options),
-      $navElement = $(options.navItemParent),
-      $(options.slideSelector).each(function(i, e){
-        $navElement.append($(options.navItem).text(i + 1));
-      });
-  return $navElement;
-};
-/* $.re_jquerytools_tabs_menu */
  
 
 /**
@@ -39,7 +19,7 @@ Drupal.behaviors.re_jquerytools_tabs = function(context) {
   // Get the selector:
   var $viewItems = $('#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul > li');
   // Build a menu and append it at an appropriate location:
-  $viewItems.parents('.view-content').append($.re_jquerytools_tabs_menu());
+  $viewItems.parents('.view-content').append($.re_contextlibraries_menu());
   // Now, instantiate the tabs/slideshow:
   $('#re_slideshow-view-display-id-block_1-navigation')
     .tabs($viewItems, {
@@ -52,4 +32,4 @@ Drupal.behaviors.re_jquerytools_tabs = function(context) {
       autoplay: true,
       interval: 4000
     });
-} /* Drupal.behaviors.re_jquerytools_tabs */
+}; /* Drupal.behaviors.re_jquerytools_tabs */
