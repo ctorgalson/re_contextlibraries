@@ -5,6 +5,8 @@
  * @file
  * This file provides context plugins, logic, and standard hook implementations
  * for the re_contextlibraries module.
+ *
+ * @author Christopher Torgalson <chris@raisedeyebrow.com>
  */
 
 
@@ -59,8 +61,8 @@ function re_contextlibraries_help($path, $arg) {
  * Implementation of hook_init()
  */
 function re_contextlibraries_init() {
-  $plugin = context_get_plugin('reaction', 'includelibraries');
-  if ($plugin) {
+  // Find out what reactions are available (if any), and execute 'em:
+  if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
     $plugin->execute();
   }
 } // re_contextlibraries_init()
@@ -86,20 +88,17 @@ function re_contextlibraries_load_resources($library_settings, $context) {
       drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit'))), 'error');
       break;
     default: // But if there is one...or more...     
-      foreach ($library_names as $library_name) {
-        // We need to display the debug message if the user has requested it--
-        // unfortunately, there's no specific context permission for access to the
-        // context ui section:
-        if ($library_debug) {
-          $debug_message = t('The current javascript library is provided by the %library module. You can change this on the !context-settings-page.', array('%library' => $library_name, '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
-          drupal_set_message($debug_message, 'status', TRUE);
-        }
+      foreach ($library_names as $library_name) {        
         // Then, we need to retrieve the library data:
         if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
-          // Loop through the available js files and add them:
-          foreach ($library_data['js'] as $file) {
-            if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
-              drupal_add_js($file, 'module');
+          // Handle js first:
+          // We need to check to see if there even ARE any js files in this library:
+          if (array_key_exists('js', $library_data)) {
+            // Loop through the available js files and add them:
+            foreach ($library_data['js'] as $file) {
+              if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
+                drupal_add_js($file, 'module');
+              }
             }
           }
           // Finally, if specified, we need to add the custom js file to the js array:
@@ -107,11 +106,22 @@ function re_contextlibraries_load_resources($library_settings, $context) {
             $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
             drupal_add_js($path_to_file, 'module');
           }
-          // Loop through the available css files and add them:
-          foreach ($library_data['css'] as $file) {
-            drupal_add_css($file, 'module');
+          // Then handle css:
+          // There may or may not be any css provided by this library:
+          if (array_key_exists('css', $library_data)) {
+            // Loop through the available css files and add them:
+            foreach ($library_data['css'] as $file) {
+              drupal_add_css($file, 'module');
+            }
           }
         }
+      }
+      // We need to display the debug message if the user has requested it--
+      // unfortunately, there's no specific context permission for access to the
+      // context ui section:
+      if ($library_debug) {
+        $debug_message = t('The following modules are providing libraries to this context: %libraries. You can change this on the !context-settings-page.', array('%libraries' => implode(', ', array_keys($library_names)), '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
+          drupal_set_message($debug_message, 'status', TRUE);
       }
       break;
   }
