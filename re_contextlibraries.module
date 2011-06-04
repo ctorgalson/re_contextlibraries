@@ -88,7 +88,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
       drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit'))), 'error');
       break;
     default: // But if there is one...or more...     
-      foreach ($library_names as $library_name) {        
+      foreach ($library_names as $library_name) {   
         // Then, we need to retrieve the library data:
         if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
           // Handle js first:
@@ -96,9 +96,15 @@ function re_contextlibraries_load_resources($library_settings, $context) {
           if (array_key_exists('js', $library_data)) {
             // Loop through the available js files and add them:
             foreach ($library_data['js'] as $file) {
-              if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
-                drupal_add_js($file, 'module');
-              }
+                // This lovely conditional effectively says "even if the 'library
+                // only' box is checked on the context page, we may still add a
+                // js file made available by this module or a library module,
+                // provided that it (a) does not have the same name as the library
+                // module we're currently looking at, AND (b) it is not the utility
+                // js file provided by this module":
+                if (!$library_only || (strpos($file, $library_name .'.js') === FALSE && $file != $path_to_module .'/js/re_contextlibraries.js')) { // DeMorgan!
+                  drupal_add_js($file, is_array($file) ? 'setting' : 'module');
+                }
             }
           }
           // Finally, if specified, we need to add the custom js file to the js array:

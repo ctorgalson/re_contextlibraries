@@ -61,7 +61,8 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
    * This function provides the specified libraries for the given context:
    */
   function execute() {
-    $contexts = context_active_contexts();
+    //$contexts = context_active_contexts();
+    $contexts = context_enabled_contexts();
     foreach ($contexts as $context) {
       $library_settings = $this->fetch_from_context($context);
       if (!empty($context->reactions['includelibraries'])) {
