@@ -8,6 +8,7 @@
  *
  * @see http://malsup.com/jquery/cycle/options.html
  */
+(function ($) {
 Drupal.behaviors.re_jquerycycle = function(context) {
   $('#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul')
     .after('<div id="re_slideshow-view-display-id-block_1-navigation"/>')  
@@ -19,3 +20,4 @@ Drupal.behaviors.re_jquerycycle = function(context) {
   		pauseOnPagerHover: true
   	});
 } /* Drupal.behaviors.re_jquerycycle */
+})(jQuery);
