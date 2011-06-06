@@ -14,14 +14,16 @@
   /**
    * This is the main, 'business', function for this library.
    */
-  Drupal.behaviors.re_flowplayer = function(context) {
-    var flowplayerSwf = Drupal.settings.basePath + Drupal.settings.re_flowplayer.pathToModule +'/js/flowplayer/flowplayer-3.2.7.swf';
-    debug = {
-      flowplayerSwf: flowplayerSwf
-    };
-    console.dir(debug);
-    //flowplayer('player', Drupal.settings.basePath + Drupal.settings.re_flowplayer.pathToModule +'/js/flowplayer/flowplayer-3.2.7.swf');
-    $('a[href*=.mp4]')
-      .flowplayer(flowplayerSwf);
+  Drupal.behaviors.re_flowplayer = {
+    attach: function(context) {
+      var flowplayerSwf = Drupal.settings.basePath + Drupal.settings.re_flowplayer.pathToModule +'/js/flowplayer/flowplayer-3.2.7.swf';
+      debug = {
+        flowplayerSwf: flowplayerSwf
+      };
+      console.dir(debug);
+      //flowplayer('player', Drupal.settings.basePath + Drupal.settings.re_flowplayer.pathToModule +'/js/flowplayer/flowplayer-3.2.7.swf');
+      $('a[href*=.mp4]')
+        .flowplayer(flowplayerSwf);
+    }
   }; /* Drupal.behaviors.re_flowplayer */
 })(jQuery);

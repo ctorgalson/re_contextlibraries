@@ -19,18 +19,20 @@
    *    * string navItem Element ready for jquery creation, e.g. <a /> etc
    * @todo Make wrapping available for navItem
    */
-  $.re_contextlibraries_menu = function(options) {  
-    var defaults = {
+  $.re_contextlibraries_menu = {
+    attach: function(options) {  
+      var defaults = {
           slideSelector: '#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul > li',
           navItemParent: '<div id="re_slideshow-view-display-id-block_1-navigation" />',
           navItem: '<a href="#" />'
-        },
-        options = $.extend(defaults, options),
-        $navElement = $(options.navItemParent);
-    $(options.slideSelector).each(function(i, e){
-      $navElement.append($(options.navItem).text(i + 1));
-    });
-    return $navElement;
+      },
+      options = $.extend(defaults, options),
+      $navElement = $(options.navItemParent);
+      $(options.slideSelector).each(function(i, e){
+        $navElement.append($(options.navItem).text(i + 1));
+      });
+      return $navElement;
+    }
   };
   /* $.re_contextlibraries_tabs_menu */
 })(jQuery);
