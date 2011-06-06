@@ -11,7 +11,7 @@
 
 
 /**
- * Implementation of hook_context_plugins().
+ * Implements hook_context_plugins().
  */ 
 function re_contextlibraries_context_plugins() {
   $plugins = array();
@@ -28,7 +28,7 @@ function re_contextlibraries_context_plugins() {
 
 
 /**
- * Implementation of hook_context_registry().
+ * Implements hook_context_registry().
  */ 
 function re_contextlibraries_context_registry() {
   return array(
@@ -44,7 +44,7 @@ function re_contextlibraries_context_registry() {
 
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function re_contextlibraries_help($path, $arg) {
   $path_to_module = drupal_get_path('module', 're_contextlibraries');
@@ -58,7 +58,7 @@ function re_contextlibraries_help($path, $arg) {
 
 
 /** 
- * Implementation of hook_init()
+ * Implements hook_init()
  */
 function re_contextlibraries_init() {
   // Find out what reactions are available (if any), and execute 'em:
@@ -135,7 +135,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
 
 
 /**
- * Implementation of hook_perm().
+ * Implements hook_perm().
  */
 function re_contextlibraries_perm() {
   return array('administer re_contextlibraries');
