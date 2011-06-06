@@ -85,7 +85,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
   // Which library has been asked for?
   switch ($library_names) {
     case 'none': // If there isn't one...
-      drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator. ', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit'))), 'error');
+      drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit'))), 'error');
       break;
     default: // But if there is one...or more...
       foreach ($library_names as $library_name) {
@@ -126,7 +126,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
       // unfortunately, there's no specific context permission for access to the
       // context ui section:
       if ($library_debug) {
-        $debug_message = t('The following modules are providing libraries to this context: %libraries. You can change this on the !context-settings-page. ', array('%libraries' => implode(', ', array_keys($library_names)), '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit')));
+        $debug_message = t('The following modules are providing libraries to this context: %libraries. You can change this on the !context-settings-page.', array('%libraries' => implode(', ', array_keys($library_names)), '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit')));
           drupal_set_message($debug_message, 'status', TRUE);
       }
       break;
