@@ -19,11 +19,11 @@
   Drupal.behaviors.re_jquerytools_tabs = {
     attach: function(context) {
       // Get the selector:
-      var $viewItems = $('#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul > li');
+      var $viewItems = $('#block-views-re-slideshow-block .view-display-id-block > .view-content > ul > li');
       // Build a menu and append it at an appropriate location:
       $viewItems.parents('.view-content').append($.re_contextlibraries_menu());
       // Now, instantiate the tabs/slideshow:
-      $('#re_slideshow-view-display-id-block_1-navigation')
+      $('#re-slideshow-view-display-id-block-navigation')
         .tabs($viewItems, {
           effect: 'fade', // Enable "cross-fading" effect...
           fadeInSpeed: 1000,

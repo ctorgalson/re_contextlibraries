@@ -22,8 +22,8 @@
   $.re_contextlibraries_menu = {
     attach: function(options) {  
       var defaults = {
-          slideSelector: '#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul > li',
-          navItemParent: '<div id="re_slideshow-view-display-id-block_1-navigation" />',
+          slideSelector: '#block-views-re-slideshow-block .view-display-id-block_1 > .view-content > ul > li',
+          navItemParent: '<div id="re-slideshow-view-display-id-block-navigation" />',
           navItem: '<a href="#" />'
       },
       options = $.extend(defaults, options),

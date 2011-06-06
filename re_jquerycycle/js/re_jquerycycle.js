@@ -11,12 +11,12 @@
 (function ($) {
   Drupal.behaviors.re_jquerycycle = {
     attach: function(context) {
-      $('#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul')
-        .after('<div id="re_slideshow-view-display-id-block_1-navigation"/>')  
+      $('#block-views-re-slideshow-block .view-display-id-block_1 > .view-content > ul')
+        .after('<div id="re-slideshow-view-display-id-block-navigation"/>')  
         .cycle({
     		  fx: 'scrollVert',
     		  height: 400,
-    		  pager: '#re_slideshow-view-display-id-block_1-navigation',
+    		  pager: '#re-slideshow-view-display-id-block-navigation',
     		  pause: true,
     		  pauseOnPagerHover: true
     	 });
