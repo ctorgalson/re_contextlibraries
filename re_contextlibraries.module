@@ -103,14 +103,14 @@ function re_contextlibraries_load_resources($library_settings, $context) {
                 // module we're currently looking at, AND (b) it is not the utility
                 // js file provided by this module":
                 if (!$library_only || (strpos($file, $library_name . ' .js') === FALSE && $file != $path_to_module . '/js/re_contextlibraries.js')) { // DeMorgan!
-                  drupal_add_js($file, is_array($file) ? 'setting' : 'module');
+                  drupal_add_js($file, is_array($file) ? 'setting' : 'file');
                 }
             }
           }
           // Finally, if specified, we need to add the custom js file to the js array:
           if ($library_custom) {
             $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
-            drupal_add_js($path_to_file, 'module');
+            drupal_add_js($path_to_file, 'file');
           }
           // Then handle css:
           // There may or may not be any css provided by this library:
