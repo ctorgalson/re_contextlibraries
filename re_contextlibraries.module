@@ -135,11 +135,11 @@ function re_contextlibraries_load_resources($library_settings, $context) {
 
 
 /**
- * Implements hook_perm().
+ * Implements hook_permission().
  */
-function re_contextlibraries_perm() {
+function re_contextlibraries_permission() {
   return array('administer re_contextlibraries');
-} // re_contextlibraries_perm()
+} // re_contextlibraries_permission()
 
 
 /**
