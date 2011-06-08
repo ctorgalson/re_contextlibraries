@@ -14,6 +14,7 @@
       $('#block-views-re-slideshow-block .view-display-id-block > .view-content > ul')
         .after('<div id="re-slideshow-view-display-id-block-navigation"/>')  
         .cycle({
+          fit: true,
     		  fx: 'scrollVert',
     		  height: 400,
     		  pager: '#re-slideshow-view-display-id-block-navigation',
