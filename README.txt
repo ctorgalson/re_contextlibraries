@@ -1,6 +1,9 @@
 @todo This content is now almost totally obsolete; rewrite from CONFIGURATION
       section onwards!
       
+      Update: it's also entirely Drupal 6 specific. Ask the author if you have
+              questions :)
+      
 
 RE Context Libraries README.txt
 --------------------------------------------------------------------------------

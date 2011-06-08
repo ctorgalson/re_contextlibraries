@@ -32,21 +32,6 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
         '#multiple' => TRUE,
         '#weight' => 5,
       ),
-      'library_only' => array(
-        '#type' => 'checkbox',
-        '#title' => t('Include Libraries Only'),
-        '#description' => t('Force this library module to include only javascript library files and not its custom javascripts. This setting is useful when custom javascript function calls are provided in the theme layer.'),
-        '#default_value' => $values['library_only'] == 1 ? $values['library_only'] : 0,
-        '#weight' => 10,
-      ),
-      'library_custom' => array(
-        '#type' => 'textfield',
-        '#title' => t('Include Custom File'),
-        '#description' => t('If "Include Libraries Only" is set (above), you may provide the path (relative to the directory in which Drupal is running) to an alternate file provided by a theme or another module. If present in the path, "%t" will be substituted with the path to the theme in use when this context is active.'),
-        '#default_value' => $values['library_only'] == 1 ? $values['library_custom'] : '',
-        '#disabled' => $values['library_only'] == 1 ? FALSE : TRUE,
-        '#weight' => 15,
-      ),
       'library_debug' => array(
         '#type' => 'checkbox',
         '#title' => t('Enable Debug Mode'),
