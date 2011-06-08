@@ -12,6 +12,7 @@ Drupal.behaviors.re_jquerycycle = function(context) {
   $('#block-views-re_slideshow-block_1 .view-display-id-block_1 > .view-content > ul')
     .after('<div id="re_slideshow-view-display-id-block_1-navigation"/>')  
     .cycle({
+      fit: true,
   		fx: 'scrollVert',
   		height: 400,
   		pager: '#re_slideshow-view-display-id-block_1-navigation',
