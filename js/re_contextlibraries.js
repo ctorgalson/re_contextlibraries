@@ -22,15 +22,35 @@
   $.re_contextlibraries_menu = function(options) {  
     var defaults = {
         slideSelector: '#block-views-re-slideshow-block .view-display-id-block > .view-content > ul > li',
-        navItemParent: '<div id="re-slideshow-view-display-id-block-navigation" />',
-        navItem: '<a href="#" />'
+        menuItemParent: '<div id="re-slideshow-view-display-id-block-navigation" />',
+        menuItem: '<a href="#" />'
     },
     options = $.extend(defaults, options),
-    $navElement = $(options.navItemParent);
+    $menuElement = $(options.menuItemParent);
     $(options.slideSelector).each(function(i, e){
-      $navElement.append($(options.navItem).text(i + 1));
+      $menuElement.append($(options.menuItem).text(i + 1));
     });
-    return $navElement;
-  };
-  /* $.re_contextlibraries_tabs_menu */
+    return $menuElement;
+  }; /* $.re_contextlibraries_menu */
+  
+  
+  /**
+   * This function builds previous and next links in the page and appends them to
+   * the supplied element.
+   *
+   * @param object options The configuration options to this function:
+   *
+   *    * string buttonsParent Element ready for jquery creation, or selector
+   *    * string nextElement Element ready for jquery creation
+   *    * string prevElement Element ready for jquery creation
+   */
+  $.re_contextlibraries_buttons = function(options) {
+    var defaults = {
+      buttonsParent: '<div class="re_slideshow-buttons" />',
+      prevElement: '<div class="re_slideshow-prev-wrapper"><a class="re_slideshow-prev">Prev</a></div>',
+      nextElement: '<div class="re_slideshow-next-wrapper"><a class="re_slideshow-next">Next</a></div>'
+    },
+    options = $.extend(defaults, options);
+    $(options.buttonsParent).append(options.prevElement).append(options.nextElement);
+  }; /* $.re_contextlibraries_buttons */
 })(jQuery);

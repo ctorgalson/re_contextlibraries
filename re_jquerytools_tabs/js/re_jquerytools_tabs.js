@@ -22,6 +22,8 @@
       var $viewItems = $('#block-views-re-slideshow-block .view-display-id-block > .view-content > ul > li');
       // Build a menu and append it at an appropriate location:
       $viewItems.parents('.view-content').append($.re_contextlibraries_menu());
+      // Build previous and next buttons and do likewise:
+      $.re_contextlibraries_buttons({buttonsParent: '#block-views-re-slideshow-block .view-display-id-block > .view-content'});
       // Now, instantiate the tabs/slideshow:
       $('#re-slideshow-view-display-id-block-navigation')
         .tabs($viewItems, {
@@ -32,7 +34,9 @@
         })
         .slideshow({ // Use the slideshow plugin. It accepts its own configuration...
           autoplay: true,
-          interval: 4000
+          interval: 4000,
+          next: '.re_slideshow-next',
+          prev: '.re_slideshow-prev'
         });
     }
   }; /* Drupal.behaviors.re_jquerytools_tabs */
