@@ -12,11 +12,13 @@
  * Implementation of hook_define_re_contextlibraries_library()
  */
 function re_jquerycycle_define_re_contextlibraries_library() {
+  $path_to_parent_module = drupal_get_path('module', 're_contextlibraries');
   $path_to_module = drupal_get_path('module', 're_jquerycycle');
   $library = array(
     're_jquerycycle' => array(
       'name' => 'jQuery Cycle (provided by: re_jquerycycle)',
       'js' => array(
+        $path_to_parent_module .'/js/re_contextlibraries.js',
         $path_to_module .'/js/jquery.easing.1.3.js',
         $path_to_module .'/js/jquery.cycle/jquery.cycle.all.min.js',
         $path_to_module .'/js/re_jquerycycle.js',
