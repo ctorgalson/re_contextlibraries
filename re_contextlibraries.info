@@ -1,10 +1,10 @@
 ;$Id$
 
 name = 'RE Context Libraries'
-description = 'Provides a base module for adding javascript libraries using Context'
+description = "Provides a base module for adding javascript libraries using Context. The 1.0 version of the module still uses home-rolled library functions rather than Drupal 7's set of library functions."
 package = 'Raised Eyebrow Custom Modules'
 dependencies[] = context
 dependencies[] = jquery_update
 core = 7.x
 php = 5.2
-version = 7.x-1.0-alpha1
+version = 7.x-1.0
