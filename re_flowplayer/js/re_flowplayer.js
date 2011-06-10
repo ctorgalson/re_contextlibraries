@@ -10,7 +10,7 @@
  */
  
 
-(function ($) {
+(function($) {
   /**
    * This is the main, 'business', function for this library.
    */
