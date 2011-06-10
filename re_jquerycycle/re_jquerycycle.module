@@ -8,25 +8,48 @@
  */
 
 
+// Constants:
+define('RE_JQUERYCYCLE_MODULE_MACHINE_NAME', 're_jquerycycle');
+define('RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME', 're_jquerycycle');
+define('RE_JQUERYCYCLE_LIBRARY_TITLE', 'jQuery Cycle (provided by: re_jquerycycle)');
+
+
 /**
  * Implementation of hook_define_re_contextlibraries_library()
  */
 function re_jquerycycle_define_re_contextlibraries_library() {
-  $path_to_parent_module = drupal_get_path('module', 're_contextlibraries');
-  $path_to_module = drupal_get_path('module', 're_jquerycycle');
-  $library = array(
-    're_jquerycycle' => array(
-      'name' => 'jQuery Cycle (provided by: re_jquerycycle)',
-      'js' => array(
-        $path_to_parent_module .'/js/re_contextlibraries.js',
-        $path_to_module .'/js/jquery.easing.1.3.js',
-        $path_to_module .'/js/jquery.cycle/jquery.cycle.all.min.js',
-        $path_to_module .'/js/re_jquerycycle.js',
+  return array(RE_JQUERYCYCLE_MODULE_MACHINE_NAME . ':' .RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME => RE_JQUERYCYCLE_LIBRARY_TITLE);
+} // re_jquerycycle_define_re_contextlibraries_library()
+
+
+/**
+ * Implements hook_library().
+ *
+ * Used to register libraries with the system.
+ */
+function re_jquerycycle_library() {
+  $path_to_module = drupal_get_path('module', RE_JQUERYCYCLE_MODULE_MACHINE_NAME);
+  $libraries[RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME] = array(
+    'title' => RE_JQUERYCYCLE_LIBRARY_TITLE, 
+    'website' => 'http://malsup.com/jquery/cycle/', 
+    'version' => '2.99', 
+    'js' => array(
+      $path_to_module . '/js/jquery.easing.1.3.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => 2,
       ),
-      'css' => array(
-        $path_to_module .'/css/re_jquerycycle.css',
+      $path_to_module . '/js/jquery.cycle/jquery.cycle.all.min.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => 4,
       ),
+      $path_to_module . '/js/re_jquerycycle.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => 6,
+      ),
+    ), 
+    'dependencies' => array(
+      array(RE_JQUERYCYCLE_MODULE_MACHINE_NAME, RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME),
     ),
   );
-  return $library;
-} // re_jquerycycle_define_re_contextlibraries_library()
+  return $libraries;
+} // re_jquerycycle_library()

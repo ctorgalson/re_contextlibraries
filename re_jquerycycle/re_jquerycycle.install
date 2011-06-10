@@ -13,7 +13,7 @@
  * Implements hook_install().
  */
 function re_jquerycycle_install() {
-  $library = module_invoke('re_jquerycycle', 'define_re_contextlibraries_library');
+  // Nothing to do!
 } // re_jquerycycle_install()
 
 

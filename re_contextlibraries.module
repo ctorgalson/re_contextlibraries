@@ -14,6 +14,7 @@
  * Implements hook_context_plugins().
  */
 function re_contextlibraries_context_plugins() {
+  //dpm('re_contextlibraries_context_plugins()');
   $plugins = array();
   $plugins['context_reaction_re_contextlibraries_includelibraries'] = array(
     'handler' => array(
@@ -31,6 +32,7 @@ function re_contextlibraries_context_plugins() {
  * Implements hook_context_registry().
  */
 function re_contextlibraries_context_registry() {
+  //dpm('re_contextlibraries_context_registry()');
   return array(
     'reactions' => array(
       'includelibraries' => array(
@@ -71,61 +73,45 @@ function re_contextlibraries_init() {
 
 
 /**
+ * Implements hook_library().
+ *
+ * Used to register libraries with the system.
+ */
+function re_contextlibraries_library() {
+  $path_to_module = drupal_get_path('module', 're_contextlibraries');
+  $libraries['re_contextlibraries'] = array(
+    'title' => 'RE Context Libraries (provided by: re_contextlibraries)', 
+    'website' => 'http://www.raisedeyebrow.com/',
+    'version' => '7.x-1.1', 
+    'js' => array(
+      $path_to_module . '/js/re_contextlibraries.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => 2,
+      ),
+    ), 
+  );
+  return $libraries;
+} // re_jquerycycle_library()
+
+
+/**
  * Load all the necessary files to allow us to play slides.
  *
  * @param array $library_settings The array of library settings for this context
  * @param object $context The current context
  */
 function re_contextlibraries_load_resources($library_settings, $context) {
-  // Convenience variables from incoming array:
-  $library_names = $library_settings['library_name'];
-  $library_custom = $library_settings['library_custom'];
-  $library_debug = $library_settings['library_debug'];
-  // We need to know where the module is and where the libraries folder is:
-  $path_to_module = drupal_get_path('module', 're_contextlibraries');
-  // Which library has been asked for?
-  switch ($library_names) {
-    case 'none': // If there isn't one...
-      drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit'))), 'error');
-      break;
-    default: // But if there is one...or more...
-      foreach ($library_names as $library_name) {
-        // Then, we need to retrieve the library data:
-        if ($library_data = variable_get('re_contextlibraries:' . $library_name, 'none')) {
-          // Handle js first:
-          // We need to check to see if there even ARE any js files in this library:
-          if (array_key_exists('js', $library_data)) {
-            // Loop through the available js files and add them:
-            foreach ($library_data['js'] as $file) {
-              // Add the relevant js file--these can be removed/modified in the
-              // theme layer in D7 with the new drupal_js_alter() function:  
-              drupal_add_js($file, is_array($file) ? 'setting' : 'file');
-            }
-          }
-          // Finally, if specified, we need to add the custom js file to the js array:
-          if ($library_custom) {
-            $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
-            drupal_add_js($path_to_file, 'file');
-          }
-          // Then handle css:
-          // There may or may not be any css provided by this library:
-          if (array_key_exists('css', $library_data)) {
-            // Loop through the available css files and add them:
-            foreach ($library_data['css'] as $file) {
-              drupal_add_css($file, 'module');
-            }
-          }
-        }
-      }
-      // We need to display the debug message if the user has requested it--
-      // unfortunately, there's no specific context permission for access to the
-      // context ui section:
-      if ($library_debug) {
-        $debug_message = t('The following modules are providing libraries to this context: %libraries. You can change this on the !context-settings-page.', array('%libraries' => implode(', ', array_keys($library_names)), '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/' . $context->name . '/edit')));
-          drupal_set_message($debug_message, 'status', TRUE);
-      }
-      break;
+  $i = 0;
+  foreach ($library_settings['library_name'] as $library) {
+    // Break the incoming value apart into module and library names:
+    $library_details = explode(':', $library);
+    $module = $library_details[0];
+    $library = $library_details[1];
+    //$library_added = drupal_add_library($module, $library);
+    //dpm("Module: $module | Library: $library | Library added: $library_added");
+    $i++;
   }
+  dpm("End of loop reached: $i iterations");
 } // re_contextlibraries_load_resources()
 
 
@@ -138,17 +124,14 @@ function re_contextlibraries_permission() {
 
 
 /**
- * Registers available libraries provided by other modules:
+ * Registers available libraries provided by other modules.
+ *
+ * @return array Array suitable for use in #options in Forms API. Keys are
+ *               module_name:library_name and values are 'Human Readable library
+ *               Name'. These values correspond to those defined in hook_library()
+ * @see http://api.drupal.org/api/drupal/modules--system--system.api.php/function/hook_library/7
  */
 function re_contextlibraries_register_libraries() {
   // Find out about all the libraries available:
-  $libraries = module_invoke_all('define_re_contextlibraries_library');
-  // Then set variables for each of them, and collect the names only in an array
-  // suitable for use in a forms api select:
-  $library_options = array('' => 'None');
-  foreach ($libraries as $library => $files) {
-    variable_set('re_contextlibraries:' . $library, $files);
-    $library_options[$library] = $files['name'];
-  }
-  return $library_options;
+  return module_invoke_all('define_re_contextlibraries_library');
 } // re_contextlibraries_register_library()
