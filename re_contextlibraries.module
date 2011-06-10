@@ -14,7 +14,6 @@
  * Implements hook_context_plugins().
  */
 function re_contextlibraries_context_plugins() {
-  //dpm('re_contextlibraries_context_plugins()');
   $plugins = array();
   $plugins['context_reaction_re_contextlibraries_includelibraries'] = array(
     'handler' => array(
@@ -32,7 +31,6 @@ function re_contextlibraries_context_plugins() {
  * Implements hook_context_registry().
  */
 function re_contextlibraries_context_registry() {
-  //dpm('re_contextlibraries_context_registry()');
   return array(
     'reactions' => array(
       'includelibraries' => array(
@@ -43,6 +41,14 @@ function re_contextlibraries_context_registry() {
     ),
   );
 } // re_contextlibraries_context_registry()
+
+
+/**
+ * Implementation of hook_define_re_contextlibraries_library()
+ */
+function re_contextlibraries_define_re_contextlibraries_library() {
+  return array('re_contextlibraries' . ':' . 're_contextlibraries' => t('RE Context Libraries Utilities (provided by re_contextlibraries)'));
+} // re_jquerycycle_define_re_contextlibraries_library()
 
 
 /**
@@ -91,7 +97,7 @@ function re_contextlibraries_library() {
     ), 
   );
   return $libraries;
-} // re_jquerycycle_library()
+} // re_contextlibraries_library()
 
 
 /**
@@ -101,17 +107,13 @@ function re_contextlibraries_library() {
  * @param object $context The current context
  */
 function re_contextlibraries_load_resources($library_settings, $context) {
-  $i = 0;
   foreach ($library_settings['library_name'] as $library) {
     // Break the incoming value apart into module and library names:
     $library_details = explode(':', $library);
     $module = $library_details[0];
     $library = $library_details[1];
-    //$library_added = drupal_add_library($module, $library);
-    //dpm("Module: $module | Library: $library | Library added: $library_added");
-    $i++;
+    $library_added = drupal_add_library($module, $library);
   }
-  dpm("End of loop reached: $i iterations");
 } // re_contextlibraries_load_resources()
 
 

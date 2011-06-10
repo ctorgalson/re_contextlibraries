@@ -18,7 +18,7 @@ define('RE_JQUERYCYCLE_LIBRARY_TITLE', 'jQuery Cycle (provided by: re_jquerycycl
  * Implementation of hook_define_re_contextlibraries_library()
  */
 function re_jquerycycle_define_re_contextlibraries_library() {
-  return array(RE_JQUERYCYCLE_MODULE_MACHINE_NAME . ':' .RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME => RE_JQUERYCYCLE_LIBRARY_TITLE);
+  return array(RE_JQUERYCYCLE_MODULE_MACHINE_NAME . ':' . RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME => t(RE_JQUERYCYCLE_LIBRARY_TITLE));
 } // re_jquerycycle_define_re_contextlibraries_library()
 
 
@@ -26,6 +26,8 @@ function re_jquerycycle_define_re_contextlibraries_library() {
  * Implements hook_library().
  *
  * Used to register libraries with the system.
+ *
+ * @todo Figure out why dependencies do NOT work here.
  */
 function re_jquerycycle_library() {
   $path_to_module = drupal_get_path('module', RE_JQUERYCYCLE_MODULE_MACHINE_NAME);
@@ -46,10 +48,8 @@ function re_jquerycycle_library() {
         'group' => JS_LIBRARY,
         'weight' => 6,
       ),
-    ), 
-    'dependencies' => array(
-      array(RE_JQUERYCYCLE_MODULE_MACHINE_NAME, RE_JQUERYCYCLE_LIBRARY_MACHINE_NAME),
     ),
+    //'dependencies' => array('re_contextlibraries', 're_contextlibraries'),
   );
   return $libraries;
 } // re_jquerycycle_library()
