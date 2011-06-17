@@ -118,14 +118,6 @@ function re_contextlibraries_load_resources($library_settings, $context) {
 
 
 /**
- * Implements hook_permission().
- */
-function re_contextlibraries_permission() {
-  return array('administer re_contextlibraries');
-} // re_contextlibraries_permission()
-
-
-/**
  * Registers available libraries provided by other modules.
  *
  * @return array Array suitable for use in #options in Forms API. Keys are
