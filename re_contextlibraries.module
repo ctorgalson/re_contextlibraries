@@ -117,10 +117,14 @@ function re_contextlibraries_load_resources($library_settings, $context) {
               }
             }
           }
-          // Finally, if specified, we need to add the custom js file to the js array:
-          if ($library_custom) {
-            $path_to_file = check_plain(str_replace('%t', path_to_theme(), $library_custom));
-            drupal_add_js($path_to_file, 'module');
+          // Finally, if specified, we need to add the custom js file to the js array:       
+          if ($library_only && $library_custom) {
+            $library_custom_files = explode(chr(10), $library_custom);
+            $path_to_theme = path_to_theme();
+            foreach ($library_custom_files as $library_custom_file) {
+              $path_to_file = check_plain(str_replace('%t', $path_to_theme, trim($library_custom_file)));
+              drupal_add_js($path_to_file, 'module');
+            }
           }
           // Then handle css:
           // There may or may not be any css provided by this library:

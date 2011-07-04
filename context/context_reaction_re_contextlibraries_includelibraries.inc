@@ -38,9 +38,9 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
         '#weight' => 10,
       ),
       'library_custom' => array(
-        '#type' => 'textfield',
-        '#title' => t('Include Custom File'),
-        '#description' => t('If "Include Libraries Only" is set (above), you may provide the path (relative to the directory in which Drupal is running) to an alternate file provided by a theme or another module. If present in the path, "%t" will be substituted with the path to the theme in use when this context is active.'),
+        '#type' => 'textarea',
+        '#title' => t('Include Custom File(s)'),
+        '#description' => t('If "Include Libraries Only" is set (above), you may provide the paths (one per line, relative to the directory in which Drupal is running) to one or more alternate files provided by a theme or another module. If present in a path, "%t" will be substituted with the path to the theme in use when this context is active.'),
         '#default_value' => $values['library_only'] == 1 ? $values['library_custom'] : '',
         '#disabled' => $values['library_only'] == 1 ? FALSE : TRUE,
         '#weight' => 15,
