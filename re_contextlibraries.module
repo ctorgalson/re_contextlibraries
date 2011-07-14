@@ -57,17 +57,6 @@ function re_contextlibraries_help($path, $arg) {
 } // re_contextlibraries_help()
 
 
-/** 
- * Implementation of hook_init()
- */
-function re_contextlibraries_init() {
-  // Find out what reactions are available (if any), and execute 'em:
-  if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
-    $plugin->execute();
-  }
-} // re_contextlibraries_init()
-
-
 /**
  * Load all the necessary files to allow us to play slides.
  *
@@ -154,6 +143,23 @@ function re_contextlibraries_load_resources($library_settings, $context) {
 function re_contextlibraries_perm() {
   return array('administer re_contextlibraries');
 } // re_contextlibraries_perm()
+
+
+/**
+ * Implementation of hook_preprocess_page().
+ *
+ * Normally, we would expect to run this function on e.g. hook_init(), but it
+ * seems as though hook_init() is too early in the page rendering function for
+ * d6 when it's (implicitly) calling context_active_contexts().
+ *
+ * @see http://drupalcontrib.org/api/drupal/contributions--context--context.module/function/context_active_contexts/6
+ */
+function re_contextlibraries_preprocess_page(&$variables) {
+  // Find out what reactions are available (if any), and execute 'em:
+  if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
+    $plugin->execute();
+  }
+} // recontextlibraries_preprocess_page()
 
 
 /**
