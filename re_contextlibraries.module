@@ -68,17 +68,6 @@ function re_contextlibraries_help($path, $arg) {
 
 
 /**
- * Implements hook_init().
- */
-function re_contextlibraries_init() {
-  // Find out what reactions are available (if any), and execute 'em:
-  if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
-    $plugin->execute();
-  }
-} // re_contextlibraries_init()
-
-
-/**
  * Implements hook_library().
  *
  * Used to register libraries with the system.
@@ -115,6 +104,24 @@ function re_contextlibraries_load_resources($library_settings, $context) {
     $library_added = drupal_add_library($module, $library);
   }
 } // re_contextlibraries_load_resources()
+
+
+/**
+ * Implementation of hook_preprocess_page().
+ *
+ * Normally, we would expect to run this function on e.g. hook_init(), but it
+ * seems as though hook_init() is too early in the page rendering function for
+ * Drupal when it's (implicitly) calling context_active_contexts().
+ *
+ * @see http://drupalcontrib.org/api/drupal/contributions--context--context.module/function/context_active_contexts/6
+ */
+function re_contextlibraries_preprocess_page(&$variables) {
+  // Find out what reactions are available (if any), and execute 'em:
+  if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
+    $plugin->execute();
+  }
+} // recontextlibraries_preprocess_page()
+
 
 
 /**
