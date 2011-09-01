@@ -21,8 +21,7 @@
         flowplayerSwf: flowplayerSwf
       };
       console.dir(debug);
-      //flowplayer('player', Drupal.settings.basePath + Drupal.settings.re_flowplayer.pathToModule +'/js/flowplayer/flowplayer-3.2.7.swf');
-      $('a[href*=.mp4]')
+      jQuery('a[href*=".mp4"], a[href*=".flv"]')
         .flowplayer(flowplayerSwf);
     }
   }; /* Drupal.behaviors.re_flowplayer */

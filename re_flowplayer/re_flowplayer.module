@@ -40,6 +40,10 @@ function re_flowplayer_library() {
         'group' => JS_LIBRARY,
         'weight' => 2,
       ),
+      $path_to_module .'/js/re_flowplayer.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => 1,
+      ),
       array(
         'type' => 'setting', 
         'data' => array(
