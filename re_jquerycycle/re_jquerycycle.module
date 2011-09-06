@@ -47,7 +47,22 @@ function re_jquerycycle_library() {
       $path_to_module . '/js/re_jquerycycle.js' => array(
         'group' => JS_LIBRARY,
         'weight' => 6,
-      ),
+      ), 
+      array(
+        'type' => 'setting',
+        'data' => array(
+            're_jquerycycle' => array(
+              'fit' => True,
+              'fx' => 'scrollVert',
+              'height' => 400,
+              'next' => '.re_slideshow-next',
+              'pager' => '#re-slideshow-view-display-id-block-navigation',
+              'pause' => true,
+              'pauseOnPagerHover' => true,
+              'prev' => '.re_slideshow-prev',   
+            ), 
+        ),
+      ),  
     ),
     //'dependencies' => array('re_contextlibraries', 're_contextlibraries'),
   );
