@@ -26,23 +26,19 @@
       
       //Stop the slideshow if the user clicks on anything
       var slideshow = jQuery('#block-views-re-slideshow-block .view-display-id-block > .view-content > ul');
-      slideshow.find('a').click(
-        function(){ 
+      slideshow.find('a').bind('click', function(){
           slideshow.cycle('stop');
-          $f("*").each(function(){ alert(this.getState() )});
           var nextlinks = jQuery('re-slideshow-view-display-id-block-navigation a, .re_slideshow-prev, .re_slideshow-next')
-          nextlinks.click(
-            function(event){
+          nextlinks.bind('click', function(event){
+              //restarting jQuerycycle rebuilds the pager so let's lose the one we've got
+              jQuery('#re-slideshow-view-display-id-block-navigation').empty();
               slideshow.cycle(Drupal.settings.re_jquerycycle);
-              alert('still loaded');
-              $f("*").unload();
-              $f("*").each(function(){ alert(this.getState() )});
+              //starting the slideshow means killing the video
+              $f().stop();
               //Once performed, unbind the event from itself.
               nextlinks.unbind(event);
-            }
-          );
-
-        });
+          });
+       });   
       //For jquerycycle we're going to need to reactivate the slideshow if we kill it by accident.
     }
     
