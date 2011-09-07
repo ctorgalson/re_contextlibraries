@@ -21,6 +21,7 @@
         flowplayerSwf: flowplayerSwf
       };
       console.dir(debug);
+      
       jQuery('a.re_video')
         .flowplayer(flowplayerSwf);
       
@@ -30,11 +31,13 @@
           slideshow.cycle('stop');
           var nextlinks = jQuery('re-slideshow-view-display-id-block-navigation a, .re_slideshow-prev, .re_slideshow-next')
           nextlinks.bind('click', function(event){
+              //starting the slideshow means killing the video
+              $f().unload();
               //restarting jQuerycycle rebuilds the pager so let's lose the one we've got
               jQuery('#re-slideshow-view-display-id-block-navigation').empty();
               slideshow.cycle(Drupal.settings.re_jquerycycle);
-              //starting the slideshow means killing the video
-              $f().stop();
+
+              //console.log('loading')}
               //Once performed, unbind the event from itself.
               nextlinks.unbind(event);
           });
