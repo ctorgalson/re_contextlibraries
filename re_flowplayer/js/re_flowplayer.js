@@ -29,7 +29,7 @@
       var slideshow = jQuery('#block-views-re-slideshow-block .view-display-id-block > .view-content > ul');
       slideshow.find('a').bind('click', function(){
           slideshow.cycle('stop');
-          var nextlinks = jQuery('re-slideshow-view-display-id-block-navigation a, .re_slideshow-prev, .re_slideshow-next')
+          var nextlinks = jQuery('#re-slideshow-view-display-id-block-navigation a, .re_slideshow-prev, .re_slideshow-next')
           nextlinks.bind('click', function(event){
               //starting the slideshow means killing the video
               $f().unload();
