@@ -57,8 +57,6 @@ function re_jquerycycle_library() {
               'height' => 400,
               'next' => '.re_slideshow-next',
               'pager' => '#re-slideshow-view-display-id-block-navigation',
-              'pause' => true,
-              'pauseOnPagerHover' => true,
               'prev' => '.re_slideshow-prev',   
             ), 
         ),
