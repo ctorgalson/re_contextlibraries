@@ -23,7 +23,7 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
       'library_name' => array(
         '#type' => 'select',
         '#title' => t('Available libraries'),
-        '#description' => t("The libraries in this list are available for use in this context. For information about creating libraries to extend the base module see the module's !help-page or the !readme-file.", array('!help-page' => l(t('help page'), 'admin/help/re_contextlibraries'), '!readme-file' => l(t('README file'), $path_to_module . '/README.txt'))),
+        '#description' => t("The libraries in this list are available for use in this context. For information about creating libraries to extend the base module see the module's @help-page or the @readme-file.", array('@help-page' => l(t('help page'), 'admin/help/re_contextlibraries'), '@readme-file' => l(t('README file'), $path_to_module . '/README.txt'))),
         '#options' => re_contextlibraries_register_libraries(),
         '#default_value' => isset($values['library_name']) ? $values['library_name'] : '',
         '#size' => 5,

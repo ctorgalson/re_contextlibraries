@@ -44,7 +44,7 @@ function re_contextlibraries_context_registry() {
 
 
 /**
- * Implementation of hook_define_re_contextlibraries_library()
+ * Implements hook_define_re_contextlibraries_library().
  */
 function re_contextlibraries_define_re_contextlibraries_library() {
   return array('re_contextlibraries' . ':' . 're_contextlibraries' => t('RE Context Libraries Utilities (provided by re_contextlibraries)'));
@@ -75,15 +75,15 @@ function re_contextlibraries_help($path, $arg) {
 function re_contextlibraries_library() {
   $path_to_module = drupal_get_path('module', 're_contextlibraries');
   $libraries['re_contextlibraries'] = array(
-    'title' => 'RE Context Libraries (provided by: re_contextlibraries)', 
+    'title' => 'RE Context Libraries (provided by: re_contextlibraries)',
     'website' => 'http://www.raisedeyebrow.com/',
-    'version' => '7.x-1.1', 
+    'version' => '7.x-1.1',
     'js' => array(
       $path_to_module . '/js/re_contextlibraries.js' => array(
         'group' => JS_LIBRARY,
         'weight' => 2,
       ),
-    ), 
+    ),
   );
   return $libraries;
 } // re_contextlibraries_library()
@@ -107,13 +107,13 @@ function re_contextlibraries_load_resources($library_settings, $context) {
 
 
 /**
- * Implementation of hook_preprocess_page().
+ * Implements hook_preprocess_page().
  *
  * Normally, we would expect to run this function on e.g. hook_init(), but it
- * seems as though hook_init() is too early in the page rendering function for
- * Drupal when it's (implicitly) calling context_active_contexts().
+ * seems as though the init hook is called too early in the page rendering
+ * function for Drupal when it's (implicitly) calling context_active_contexts().
  *
- * @see http://drupalcontrib.org/api/drupal/contributions--context--context.module/function/context_active_contexts/6
+ * @see http://api.lullabot.com/context_active_contexts
  */
 function re_contextlibraries_preprocess_page(&$variables) {
   // Find out what reactions are available (if any), and execute 'em:
