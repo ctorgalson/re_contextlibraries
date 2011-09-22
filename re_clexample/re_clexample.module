@@ -1,0 +1,28 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Provides the CL Example javascript library and styles to the RE Context
+ * Libraries module.
+ */
+
+
+/**
+ * Implementation of hook_define_re_contextlibraries_library().
+ */
+function re_clexample_define_re_contextlibraries_library() {
+  $path_to_module = drupal_get_path('module', 're_clexample');
+  $library = array(
+    're_clexample' => array(
+      'name' => 'CL Example (provided by: re_clexample)',
+      'js' => array(
+        $path_to_module .'/js/re_clexample.js',
+      ),
+      'css' => array(
+        $path_to_module .'/css/re_clexample.css',
+      ),
+    ),
+  );
+  return $library;
+} // re_clexample_define_re_contextlibraries_library()
