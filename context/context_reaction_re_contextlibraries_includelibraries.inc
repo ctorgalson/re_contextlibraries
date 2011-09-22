@@ -7,7 +7,7 @@
 
 /**
  * Output available libraries, configuration options for the current context.
- */ 
+ */
 class context_reaction_re_contextlibraries_includelibraries extends context_reaction {
   /**
    * This function provides the settings form for the given context:
@@ -44,19 +44,19 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
         '#default_value' => $values['library_only'] == 1 ? $values['library_custom'] : '',
         '#disabled' => $values['library_only'] == 1 ? FALSE : TRUE,
         '#weight' => 15,
-      ),     
+      ),
       'library_debug' => array(
         '#type' => 'checkbox',
         '#title' => t('Enable Debug Mode'),
         '#description' => t('In Debug Mode, the context will display a Drupal status message indicating which library module is in use. The message is only visible to users with the "administer re_contextlibraries" permission.'),
         '#weight' => 20,
         '#default_value' => isset($values['library_debug']) ? $values['library_debug'] : '',
-      )      
+      )
     );
     return $form;
   } // options_form()
-  
-  
+
+
   /**
    * This function provides the specified libraries for the given context:
    */

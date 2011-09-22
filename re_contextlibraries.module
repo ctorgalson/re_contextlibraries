@@ -12,7 +12,7 @@
 
 /**
  * Implementation of hook_context_plugins().
- */ 
+ */
 function re_contextlibraries_context_plugins() {
   $plugins = array();
   $plugins['context_reaction_re_contextlibraries_includelibraries'] = array(
@@ -20,7 +20,7 @@ function re_contextlibraries_context_plugins() {
       'path' => drupal_get_path('module', 're_contextlibraries') .'/context',
       'file' => 'context_reaction_re_contextlibraries_includelibraries.inc',
       'class' => 'context_reaction_re_contextlibraries_includelibraries',
-      'parent' => 'context_reaction',      
+      'parent' => 'context_reaction',
     ),
   );
   return $plugins;
@@ -29,7 +29,7 @@ function re_contextlibraries_context_plugins() {
 
 /**
  * Implementation of hook_context_registry().
- */ 
+ */
 function re_contextlibraries_context_registry() {
   return array(
     'reactions' => array(
@@ -37,7 +37,7 @@ function re_contextlibraries_context_registry() {
         'title' => t('Include libraries'),
         'description' => t('Include description of library inclusion here'),
         'plugin' => 'context_reaction_re_contextlibraries_includelibraries',
-      ),    
+      ),
     ),
   );
 } // re_contextlibraries_context_registry()
@@ -76,8 +76,8 @@ function re_contextlibraries_load_resources($library_settings, $context) {
     case 'none': // If there isn't one...
       drupal_set_message(t('No library has been set even though the Context Libraries module is active in this context. You can choose one at the !context-settings-page. If you do not have access to this page, please contact an administrator.', array('!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit'))), 'error');
       break;
-    default: // But if there is one...or more...     
-      foreach ($library_names as $library_name) {   
+    default: // But if there is one...or more...
+      foreach ($library_names as $library_name) {
         // Then, we need to retrieve the library data:
         if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
           // Handle js first:
@@ -87,7 +87,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
             foreach ($library_data['js'] as $file) {
               // This conditional evaluates as FALSE when:
               //
-              //  * the library only box is checked, AND 
+              //  * the library only box is checked, AND
               //  * the current file is a javascript file with the same name as
               //    the current library module
               //
@@ -106,7 +106,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
               }
             }
           }
-          // Finally, if specified, we need to add the custom js file to the js array:       
+          // Finally, if specified, we need to add the custom js file to the js array:
           if ($library_only && $library_custom) {
             $library_custom_files = explode(chr(10), $library_custom);
             $path_to_theme = path_to_theme();
