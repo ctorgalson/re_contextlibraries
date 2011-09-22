@@ -34,4 +34,6 @@ EXAMPLES
 
 
 The RE CL Example module in the re_clexample folder demonstrates how to provide
-a simple javascript library for use in any Context reaction.
+a simple javascript library for use in any Context reaction. To use the module,
+first enable it on the modules page, then add it as a reaction on the edit page
+for a context.
