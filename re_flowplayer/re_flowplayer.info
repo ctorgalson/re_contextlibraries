@@ -1,9 +1,0 @@
-;$Id$
-
-name = 'RE Flowplayer'
-description = 'Provides the Flowplayer javascript library and styles to the RE Context Libraries module.'
-package = 'Raised Eyebrow Custom Modules'
-dependencies[] = re_contextlibraries
-core = 6.x
-php = 5.2
-version = 6.x-1.0
