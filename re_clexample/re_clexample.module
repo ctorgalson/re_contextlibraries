@@ -24,5 +24,15 @@ function re_clexample_define_re_contextlibraries_library() {
       ),
     ),
   );
+  // If the advagg module is available, we can add external files too (such as
+  // the rather-useful jquery tools library)--Drupal 6 can't do this on its own:
+  if (module_exists('advagg')) {
+    $library['re_clexample']['css'][] = 'http://fonts.googleapis.com/css?family=Abel';
+    $library['re_clexample']['js'][] = array(
+      're_clexample' => array(
+        'extendedFonts' => true,
+      ),
+    );
+  }
   return $library;
 } // re_clexample_define_re_contextlibraries_library()
