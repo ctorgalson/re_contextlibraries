@@ -80,6 +80,8 @@ function re_contextlibraries_load_resources($library_settings, $context) {
       foreach ($library_names as $library_name) {
         // Then, we need to retrieve the library data:
         if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
+          // Find out if the addvag module is present:
+          $advagg = module_exists('advagg');
           // Handle js first:
           // We need to check to see if there even ARE any js files in this library:
           if (array_key_exists('js', $library_data)) {
@@ -102,7 +104,13 @@ function re_contextlibraries_load_resources($library_settings, $context) {
               // true when the library only box is not checked.
               //
               if (!$library_only || strpos($file, $library_name .'.js') === FALSE) { // DeMorgan!
-                drupal_add_js($file, is_array($file) ? 'setting' : 'module');
+                if (is_array($file)) {
+                  $type = 'setting';
+                }
+                else {
+                  $type = ($advagg == TRUE && stripos($file, 'http') !== FALSE) ? 'external' : 'module';
+                }
+                drupal_add_js($file, $type);
               }
             }
           }
@@ -120,7 +128,8 @@ function re_contextlibraries_load_resources($library_settings, $context) {
           if (array_key_exists('css', $library_data)) {
             // Loop through the available css files and add them:
             foreach ($library_data['css'] as $file) {
-              drupal_add_css($file, 'module');
+              $type = ($advagg == TRUE && stripos($file, 'http') !== FALSE) ? 'external' : 'module';
+              drupal_add_css($file, $type);
             }
           }
         }
@@ -130,7 +139,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
       // context ui section:
       if ($library_debug) {
         $debug_message = t('The following modules are providing libraries to this context: %libraries. You can change this on the !context-settings-page.', array('%libraries' => implode(', ', array_keys($library_names)), '!context-settings-page' => l('administrative page for this context', 'admin/build/context/list/'. $context->name .'/edit')));
-          drupal_set_message($debug_message, 'status', TRUE);
+        drupal_set_message($debug_message, 'status', TRUE);
       }
       break;
   }
