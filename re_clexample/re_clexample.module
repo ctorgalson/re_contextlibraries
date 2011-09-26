@@ -30,7 +30,14 @@ function re_clexample_define_re_contextlibraries_library() {
     $library['re_clexample']['css'][] = 'http://fonts.googleapis.com/css?family=Abel';
     $library['re_clexample']['js'][] = array(
       're_clexample' => array(
-        'extendedFonts' => true,
+        'extendedFonts' => TRUE,
+      ),
+    );
+  }
+  else {
+    $library['re_clexample']['js'][] = array(
+      're_clexample' => array(
+        'extendedFonts' => FALSE,
       ),
     );
   }
