@@ -25,7 +25,10 @@ function re_clexample_define_re_contextlibraries_library() {
     ),
   );
   // If the advagg module is available, we can add external files too (such as
-  // the rather-useful jquery tools library)--Drupal 6 can't do this on its own:
+  // the rather-useful jquery tools library)--Drupal 6 can't do this on its own.
+  //
+  // Here, we only check to see if the module exists--it may or may not be enabled,
+  // but we should provide the parts of the library that it may use in any case:
   if (module_exists('advagg')) {
     $library['re_clexample']['css'][] = 'http://fonts.googleapis.com/css?family=Abel';
     $library['re_clexample']['js'][] = array(

@@ -81,7 +81,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
         // Then, we need to retrieve the library data:
         if ($library_data = variable_get('re_contextlibraries:'. $library_name, 'none')) {
           // Find out if the addvag module is present:
-          $advagg = module_exists('advagg');
+          $advagg = module_exists('advagg') && variable_get('addvag_enabled', TRUE);
           // Handle js first:
           // We need to check to see if there even ARE any js files in this library:
           if (array_key_exists('js', $library_data)) {
