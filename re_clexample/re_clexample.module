@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file
@@ -7,20 +6,17 @@
  * Libraries module.
  */
 
-
-// Constants:
+// Constants.
 define('RE_CLEXAMPLE_MODULE_MACHINE_NAME', 're_clexample');
 define('RE_CLEXAMPLE_LIBRARY_MACHINE_NAME', 're_clexample');
 define('RE_CLEXAMPLE_LIBRARY_TITLE', 'RE CL Example library (provided by: re_clexample)');
-
 
 /**
  * Implements hook_define_re_contextlibraries_library().
  */
 function re_clexample_define_re_contextlibraries_library() {
   return array(RE_CLEXAMPLE_MODULE_MACHINE_NAME . ':' . RE_CLEXAMPLE_LIBRARY_MACHINE_NAME => t(RE_CLEXAMPLE_LIBRARY_TITLE));
-} // re_clexample_define_re_contextlibraries_library()
-
+}
 
 /**
  * Implements hook_library().
@@ -47,7 +43,7 @@ function re_clexample_library() {
         'weight' => 1,
       ),
     ),
-    //'dependencies' => array('re_contextlibraries', 're_contextlibraries'),
+    // 'dependencies' => array('re_contextlibraries', 're_contextlibraries'),
   );
   return $libraries;
-} // re_clexample_library()
+}
