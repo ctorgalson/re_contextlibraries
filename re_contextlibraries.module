@@ -63,27 +63,6 @@ function re_contextlibraries_help($path, $arg) {
 }
 
 /**
- * Implements hook_library().
- *
- * Used to register libraries with the system.
- */
-function re_contextlibraries_library() {
-  $path_to_module = drupal_get_path('module', 're_contextlibraries');
-  $libraries['re_contextlibraries'] = array(
-    'title' => 'RE Context Libraries (provided by: re_contextlibraries)',
-    'website' => 'http://www.raisedeyebrow.com/',
-    'version' => '7.x-1.1',
-    'js' => array(
-      $path_to_module . '/js/re_contextlibraries.js' => array(
-        'group' => JS_LIBRARY,
-        'weight' => 2,
-      ),
-    ),
-  );
-  return $libraries;
-}
-
-/**
  * Load all the necessary files to allow us to play slides.
  *
  * @param array $library_settings
