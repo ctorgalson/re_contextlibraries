@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file
@@ -8,7 +7,6 @@
  *
  * @author Christopher Torgalson <chris@raisedeyebrow.com>
  */
-
 
 /**
  * Implements hook_context_plugins().
@@ -26,7 +24,6 @@ function re_contextlibraries_context_plugins() {
   return $plugins;
 } // re_contextlibraries_context_plugins()
 
-
 /**
  * Implements hook_context_registry().
  */
@@ -42,14 +39,12 @@ function re_contextlibraries_context_registry() {
   );
 } // re_contextlibraries_context_registry()
 
-
 /**
  * Implements hook_define_re_contextlibraries_library().
  */
 function re_contextlibraries_define_re_contextlibraries_library() {
   return array('re_contextlibraries' . ':' . 're_contextlibraries' => t('RE Context Libraries Utilities (provided by re_contextlibraries)'));
 } // re_jquerycycle_define_re_contextlibraries_library()
-
 
 /**
  * Implements hook_help().
@@ -65,7 +60,6 @@ function re_contextlibraries_help($path, $arg) {
   }
   return $output;
 } // re_contextlibraries_help()
-
 
 /**
  * Implements hook_library().
@@ -88,7 +82,6 @@ function re_contextlibraries_library() {
   return $libraries;
 } // re_contextlibraries_library()
 
-
 /**
  * Load all the necessary files to allow us to play slides.
  *
@@ -105,7 +98,6 @@ function re_contextlibraries_load_resources($library_settings, $context) {
   }
 } // re_contextlibraries_load_resources()
 
-
 /**
  * Implements hook_preprocess_page().
  *
@@ -121,8 +113,6 @@ function re_contextlibraries_preprocess_page(&$variables) {
     $plugin->execute();
   }
 } // recontextlibraries_preprocess_page()
-
-
 
 /**
  * Registers available libraries provided by other modules.
