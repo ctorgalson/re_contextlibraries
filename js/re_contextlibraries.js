@@ -19,7 +19,7 @@
    *    * string navItem Element ready for jquery creation, e.g. <a /> etc
    * @todo Make wrapping available for navItem
    */
-  $.re_contextlibraries_menu = function(options) {  
+  $.re_contextlibraries_menu = function(options) {
     var defaults = {
         slideSelector: '#block-views-re-slideshow-block .view-display-id-block > .view-content > ul > li',
         menuItemParent: '<div id="re-slideshow-view-display-id-block-navigation" />',
@@ -32,8 +32,7 @@
     });
     return $menuElement;
   }; /* $.re_contextlibraries_menu */
-  
-  
+
   /**
    * This function builds previous and next links in the page and appends them to
    * the supplied element.
