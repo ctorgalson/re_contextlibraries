@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file
@@ -8,7 +7,6 @@
  *
  * @author Christopher Torgalson <chris@raisedeyebrow.com>
  */
-
 
 /**
  * Implements hook_context_plugins().
@@ -24,8 +22,7 @@ function re_contextlibraries_context_plugins() {
     ),
   );
   return $plugins;
-} // re_contextlibraries_context_plugins()
-
+}
 
 /**
  * Implements hook_context_registry().
@@ -40,16 +37,14 @@ function re_contextlibraries_context_registry() {
       ),
     ),
   );
-} // re_contextlibraries_context_registry()
-
+}
 
 /**
  * Implements hook_define_re_contextlibraries_library().
  */
 function re_contextlibraries_define_re_contextlibraries_library() {
   return array('re_contextlibraries' . ':' . 're_contextlibraries' => t('RE Context Libraries Utilities (provided by re_contextlibraries)'));
-} // re_jquerycycle_define_re_contextlibraries_library()
-
+}
 
 /**
  * Implements hook_help().
@@ -58,14 +53,14 @@ function re_contextlibraries_help($path, $arg) {
   $path_to_module = drupal_get_path('module', 're_contextlibraries');
   switch ($path) {
     case 'admin/help#re_contextlibraries':
-      $output = '<p>' . t("The RE Context Libraries module provides javascript libraries for use in the Contexts. The main module can be extended by creating very small library modules that provide additional javascript tools. For information about adding library modules for use with RE Context Libraries, please consult the module's !readme-file.", array('!readme-file' => l('README file', $path_to_module . '/README.txt'))) . '</p>';
+      $output = '<p>' . t("The RE Context Libraries module provides javascript libraries for use in the Contexts. The main module can be extended by creating very small library modules that provide additional javascript tools. For information about adding library modules for use with RE Context Libraries, please consult the module's !readme-file.", array('!readme-file' => l(t('README file'), $path_to_module . '/README.txt'))) . '</p>';
       break;
+
     default:
       $output = NULL;
   }
   return $output;
-} // re_contextlibraries_help()
-
+}
 
 /**
  * Implements hook_library().
@@ -86,14 +81,15 @@ function re_contextlibraries_library() {
     ),
   );
   return $libraries;
-} // re_contextlibraries_library()
-
+}
 
 /**
  * Load all the necessary files to allow us to play slides.
  *
- * @param array $library_settings The array of library settings for this context
- * @param object $context The current context
+ * @param array $library_settings
+ *   The array of library settings for this context.
+ * @param object $context
+ *   The current context.
  */
 function re_contextlibraries_load_resources($library_settings, $context) {
   foreach ($library_settings['library_name'] as $library) {
@@ -103,8 +99,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
     $library = $library_details[1];
     $library_added = drupal_add_library($module, $library);
   }
-} // re_contextlibraries_load_resources()
-
+}
 
 /**
  * Implements hook_preprocess_page().
@@ -120,19 +115,18 @@ function re_contextlibraries_preprocess_page(&$variables) {
   if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
     $plugin->execute();
   }
-} // recontextlibraries_preprocess_page()
-
-
+}
 
 /**
  * Registers available libraries provided by other modules.
  *
- * @return array Array suitable for use in #options in Forms API. Keys are
- *               module_name:library_name and values are 'Human Readable library
- *               Name'. These values correspond to those defined in hook_library()
+ * @return array
+ *   Array suitable for use in #options in Forms API. Keys are
+ *   module_name:library_name and values are 'Human Readable library Name'. These
+ *   values correspond to those defined in hook_library()
  * @see http://api.drupal.org/api/drupal/modules--system--system.api.php/function/hook_library/7
  */
 function re_contextlibraries_register_libraries() {
   // Find out about all the libraries available:
   return module_invoke_all('define_re_contextlibraries_library');
-} // re_contextlibraries_register_library()
+}
