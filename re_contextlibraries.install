@@ -13,10 +13,3 @@
 function re_contextlibraries_install() {
   $library = module_invoke('re_contextlibraries', 'define_re_contextlibraries_library');
 }
-
-/**
- * Implements hook_uninstall().
- */
-function re_contextlibraries_uninstall() {
-  // Nothing to do...
-}
