@@ -22,7 +22,7 @@ function re_contextlibraries_context_plugins() {
     ),
   );
   return $plugins;
-} // re_contextlibraries_context_plugins()
+}
 
 /**
  * Implements hook_context_registry().
@@ -37,14 +37,14 @@ function re_contextlibraries_context_registry() {
       ),
     ),
   );
-} // re_contextlibraries_context_registry()
+}
 
 /**
  * Implements hook_define_re_contextlibraries_library().
  */
 function re_contextlibraries_define_re_contextlibraries_library() {
   return array('re_contextlibraries' . ':' . 're_contextlibraries' => t('RE Context Libraries Utilities (provided by re_contextlibraries)'));
-} // re_jquerycycle_define_re_contextlibraries_library()
+}
 
 /**
  * Implements hook_help().
@@ -59,7 +59,7 @@ function re_contextlibraries_help($path, $arg) {
       $output = NULL;
   }
   return $output;
-} // re_contextlibraries_help()
+}
 
 /**
  * Implements hook_library().
@@ -80,7 +80,7 @@ function re_contextlibraries_library() {
     ),
   );
   return $libraries;
-} // re_contextlibraries_library()
+}
 
 /**
  * Load all the necessary files to allow us to play slides.
@@ -96,7 +96,7 @@ function re_contextlibraries_load_resources($library_settings, $context) {
     $library = $library_details[1];
     $library_added = drupal_add_library($module, $library);
   }
-} // re_contextlibraries_load_resources()
+}
 
 /**
  * Implements hook_preprocess_page().
@@ -112,7 +112,7 @@ function re_contextlibraries_preprocess_page(&$variables) {
   if ($plugin = context_get_plugin('reaction', 'includelibraries')) {
     $plugin->execute();
   }
-} // recontextlibraries_preprocess_page()
+}
 
 /**
  * Registers available libraries provided by other modules.
@@ -125,4 +125,4 @@ function re_contextlibraries_preprocess_page(&$variables) {
 function re_contextlibraries_register_libraries() {
   // Find out about all the libraries available:
   return module_invoke_all('define_re_contextlibraries_library');
-} // re_contextlibraries_register_library()
+}
