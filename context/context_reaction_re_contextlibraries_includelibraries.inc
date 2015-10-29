@@ -1,11 +1,9 @@
 <?php
-// $Id$
 
 /**
  * @file
  * Provides a reaction for the context module.
  */
-
 
 /**
  * Output available libraries, configuration options for the current context.
@@ -39,8 +37,7 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
       )
     );
     return $form;
-  } // options_form()
-
+  }
 
   /**
    * This function provides the specified libraries for the given context:
@@ -53,5 +50,5 @@ class context_reaction_re_contextlibraries_includelibraries extends context_reac
         re_contextlibraries_load_resources($library_settings, $context);
       }
     }
-  } // execute()
-} // context_reaction_re_contextlibraries_includelibraries
+  }
+}
